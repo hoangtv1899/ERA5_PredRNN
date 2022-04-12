@@ -14,7 +14,7 @@ python -u run.py \
     --img_channel 5 \
     --input_length 6 \
     --total_length 12 \
-    --num_hidden 128,128,128,128 \
+    --num_hidden 256,256,256,256 \
     --filter_size 5 \
     --stride 1 \
     --patch_size 40 \

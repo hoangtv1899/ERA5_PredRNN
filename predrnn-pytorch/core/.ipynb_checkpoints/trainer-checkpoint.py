@@ -47,7 +47,7 @@ def test(model, test_input_handle, configs, itr):
     real_input_flag = np.zeros(
         (configs.batch_size,
          configs.total_length - mask_input - 1,
-         configs.img_width // configs.patch_size,
+         configs.img_height // configs.patch_size,
          configs.img_width // configs.patch_size,
          configs.patch_size ** 2 * configs.img_channel))
 
@@ -63,7 +63,7 @@ def test(model, test_input_handle, configs, itr):
 
         img_gen = preprocess.reshape_patch_back(img_gen, configs.patch_size)
         output_length = configs.total_length - configs.input_length 
-        img_out = img_gen[:, -output_length:]
+        img_out = img_gen.copy()
 
         # MSE per frame
         for i in range(output_length):
@@ -75,7 +75,7 @@ def test(model, test_input_handle, configs, itr):
             img_mse[i] += mse
             avg_mse += mse
             # cal lpips
-            img_x = np.zeros([configs.batch_size, 3, configs.img_width, configs.img_width])
+            img_x = np.zeros([configs.batch_size, 3, configs.img_height, configs.img_width])
             if configs.img_channel == 3:
                 img_x[:, 0, :, :] = x[:, :, :, 0]
                 img_x[:, 1, :, :] = x[:, :, :, 1]
@@ -85,7 +85,7 @@ def test(model, test_input_handle, configs, itr):
                 img_x[:, 1, :, :] = x[:, :, :, 0]
                 img_x[:, 2, :, :] = x[:, :, :, 0]
             img_x = torch.FloatTensor(img_x)
-            img_gx = np.zeros([configs.batch_size, 3, configs.img_width, configs.img_width])
+            img_gx = np.zeros([configs.batch_size, 3, configs.img_height, configs.img_width])
             if configs.img_channel == 3:
                 img_gx[:, 0, :, :] = gx[:, :, :, 0]
                 img_gx[:, 1, :, :] = gx[:, :, :, 1]

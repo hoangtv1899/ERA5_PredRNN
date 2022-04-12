@@ -10,6 +10,7 @@ class InputHandle:
         self.output_data_type = input_param.get('output_data_type', 'float32')
         self.minibatch_size = input_param['minibatch_size']
         self.is_output_sequence = input_param['is_output_sequence']
+        self.concurent_step = input_param['concurent_step']
         self.data = {}
         self.indices = {}
         self.current_position = 0
@@ -81,17 +82,17 @@ class InputHandle:
         if self.no_batch_left():
             return None
         input_batch = np.zeros(
-            (self.current_batch_size, self.current_input_length) +
+            (self.current_batch_size, self.current_input_length*self.concurent_step) +
             tuple(self.data['dims'][0])).astype(self.input_data_type)
         input_batch = np.transpose(input_batch,(0,1,3,4,2))
         for i in range(self.current_batch_size):
             batch_ind = self.current_batch_indices[i]
             begin = self.data['clips'][0, batch_ind, 0]
             end = self.data['clips'][0, batch_ind, 0] + \
-                    self.data['clips'][0, batch_ind, 1]
+                    self.data['clips'][0, batch_ind, 1]*self.concurent_step
             data_slice = self.data['input_raw_data'][begin:end, :, :, :]
             data_slice = np.transpose(data_slice,(0,2,3,1))
-            input_batch[i, :self.current_input_length, :, :, :] = data_slice
+            input_batch[i, :self.current_input_length*self.concurent_step, :, :, :] = data_slice
         input_batch = input_batch.astype(self.input_data_type)
         return input_batch
 
@@ -108,7 +109,7 @@ class InputHandle:
             else:
                 output_dim = self.data['dims'][1]
             output_batch = np.zeros(
-                (self.current_batch_size,self.current_output_length) +
+                (self.current_batch_size,self.current_output_length*self.concurent_step) +
                 tuple(output_dim))
         else:
             output_batch = np.zeros((self.current_batch_size, ) +
@@ -117,7 +118,7 @@ class InputHandle:
             batch_ind = self.current_batch_indices[i]
             begin = self.data['clips'][1, batch_ind, 0]
             end = self.data['clips'][1, batch_ind, 0] + \
-                    self.data['clips'][1, batch_ind, 1]
+                    self.data['clips'][1, batch_ind, 1]*self.concurent_step
             if self.is_output_sequence:
                 data_slice = raw_dat[begin:end, :, :, :]
                 output_batch[i, : data_slice.shape[0], :, :, :] = data_slice

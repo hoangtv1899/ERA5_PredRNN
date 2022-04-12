@@ -8,7 +8,8 @@ datasets_map = {
 
 
 def data_provider(dataset_name, train_data_paths, valid_data_paths, batch_size,
-                  img_width, seq_length, injection_action, is_training=True):
+                  img_height, img_width, seq_length, injection_action, concurent_step, 
+                  is_training=True):
     if dataset_name not in datasets_map:
         raise ValueError('Name of dataset unknown %s' % dataset_name)
     train_data_list = train_data_paths.split(',')
@@ -16,7 +17,10 @@ def data_provider(dataset_name, train_data_paths, valid_data_paths, batch_size,
     if dataset_name == 'mnist':
         test_input_param = {'paths': valid_data_list,
                             'minibatch_size': batch_size,
+                            'image_height': img_height,
+                            'image_width': img_width,
                             'input_data_type': 'float32',
+                            'concurent_step':concurent_step,
                             'is_output_sequence': True,
                             'name': dataset_name + 'test iterator'}
         test_input_handle = datasets_map[dataset_name].InputHandle(test_input_param)
@@ -25,6 +29,9 @@ def data_provider(dataset_name, train_data_paths, valid_data_paths, batch_size,
             train_input_param = {'paths': train_data_list,
                                  'minibatch_size': batch_size,
                                  'input_data_type': 'float32',
+                                 'image_height': img_height,
+                                 'image_width': img_width,
+                                 'concurent_step':1,
                                  'is_output_sequence': True,
                                  'name': dataset_name + ' train iterator'}
             train_input_handle = datasets_map[dataset_name].InputHandle(train_input_param)
@@ -35,6 +42,7 @@ def data_provider(dataset_name, train_data_paths, valid_data_paths, batch_size,
 
     if dataset_name == 'action':
         input_param = {'paths': valid_data_list,
+                       'image_height': img_height,
                        'image_width': img_width,
                        'minibatch_size': batch_size,
                        'seq_length': seq_length,
@@ -56,7 +64,7 @@ def data_provider(dataset_name, train_data_paths, valid_data_paths, batch_size,
         test_input_param = {'valid_data_paths': valid_data_list,
                             'train_data_paths': train_data_list,
                             'batch_size': batch_size,
-                            'image_width': img_width,
+                            'image_height': img_height,
                             'image_height': img_width,
                             'seq_length': seq_length,
                             'injection_action': injection_action,
