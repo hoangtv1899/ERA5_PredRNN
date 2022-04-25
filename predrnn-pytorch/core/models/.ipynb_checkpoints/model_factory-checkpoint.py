@@ -55,9 +55,12 @@ class Model(object):
         mask_tensor = torch.FloatTensor(mask).to(self.configs.device)
         final_next_frames = []
         for i in range(self.configs.concurent_step):
+            print(i)
             next_frames, _ = self.network(frames_tensor[:,input_length*i:input_length*i+total_length,:,:,:], 
                                           mask_tensor,
                                           istrain=istrain)
             frames_tensor[:,input_length*i+1:input_length*i+total_length,:,:,:] = next_frames
             final_next_frames.append(next_frames.detach().cpu().numpy()[:,-output_length:,:,:,:])
+            del next_frames
+            torch.cuda.empty_cache()
         return np.hstack(final_next_frames)

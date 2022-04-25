@@ -23,6 +23,15 @@ def train(model, ims, real_input_flag, configs, itr):
 
 
 def test(model, test_input_handle, configs, itr):
+    if configs.use_weight ==1 :
+        layer_weights = np.array([float(xi) for xi in configs.layer_weight.split(',')])
+        if layer_weights.shape[0] != configs.img_channel:
+            print('error! number of channels and weigth should be the same')
+            print('weight length: '+str(layer_weights.shape[0]) +', number of channel: '+str(configs.img_channel))
+            sys.exit()
+        layer_weights = layer_weights[np.newaxis,...]
+    else:
+        layer_weights = 1
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'test...')
     test_input_handle.begin(do_shuffle=False)
     res_path = os.path.join(configs.gen_frm_dir, str(itr))
@@ -57,6 +66,7 @@ def test(model, test_input_handle, configs, itr):
     while (test_input_handle.no_batch_left() == False):
         batch_id = batch_id + 1
         test_ims = test_input_handle.get_batch()
+        test_ims = test_ims * layer_weights
         test_dat = preprocess.reshape_patch(test_ims, configs.patch_size)
         test_ims = test_ims[:, :, :, :, :configs.img_channel]
         img_gen = model.test(test_dat, real_input_flag)
@@ -64,6 +74,8 @@ def test(model, test_input_handle, configs, itr):
         img_gen = preprocess.reshape_patch_back(img_gen, configs.patch_size)
         output_length = configs.total_length - configs.input_length 
         img_out = img_gen.copy()
+        img_out = img_out/layer_weights
+        test_ims = test_ims/layer_weights
 
         # MSE per frame
         for i in range(output_length):
