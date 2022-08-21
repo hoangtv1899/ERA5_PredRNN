@@ -1,11 +1,14 @@
 __author__ = 'yunbo'
 
 import torch
+import numpy as np
 import torch.nn as nn
 from core.layers.SpatioTemporalLSTMCell_v2 import SpatioTemporalLSTMCell
 import torch.nn.functional as F
+from core.utils import preprocess
 from core.utils.tsne import visualization
-
+import sys
+import pywt as pw
 
 class RNN(nn.Module):
     def __init__(self, num_layers, num_hidden, configs):
@@ -14,14 +17,35 @@ class RNN(nn.Module):
         self.configs = configs
         self.visual = self.configs.visual
         self.visual_path = self.configs.visual_path
+        if configs.is_WV:
+            self.configs.img_channel = self.configs.img_channel * 4
 
         self.frame_channel = configs.patch_size * configs.patch_size * configs.img_channel
         self.num_layers = num_layers
         self.num_hidden = num_hidden
         cell_list = []
-
+        
+        if configs.use_weight ==1 :
+            self.layer_weights = np.array([float(xi) for xi in configs.layer_weight.split(',')])
+            if configs.is_WV ==0:
+                if self.layer_weights.shape[0] != configs.img_channel:
+                    print('error! number of channels and weigth should be the same')
+                    print('weight length: '+str(self.layer_weights.shape[0]) +', number of channel: '+str(configs.img_channel))
+                    sys.exit()
+                self.layer_weights = np.repeat(self.layer_weights, configs.patch_size * configs.patch_size)[np.newaxis,...]
+            else:
+                self.layer_weights = np.repeat(self.layer_weights, configs.patch_size * configs.patch_size *4)[np.newaxis,...]
+        else:
+            self.layer_weights = np.ones((1))
+        #print(self.layer_weights.shape)
+        
+        self.layer_weights = torch.FloatTensor(self.layer_weights).to(self.configs.device)
         height = configs.img_height // configs.patch_size
         width = configs.img_width // configs.patch_size
+        
+        if configs.is_WV:
+            height, width = int(height/2), int(width/2)
+        
         self.MSE_criterion = nn.MSELoss()
 
         for i in range(num_layers):
@@ -45,7 +69,24 @@ class RNN(nn.Module):
         batch = frames.shape[0]
         height = frames.shape[3]
         width = frames.shape[4]
-
+        if self.configs.is_WV:
+            tcoeffs = pw.dwt2(frames.detach().cpu().numpy(), 'db1', axes = (-2,-1))
+            tcA, (tcH, tcV, tcD) = tcoeffs
+            frames = np.concatenate(((tcA, tcH, tcV, tcD)), axis=2)
+            #frames = preprocess.reshape_patch(frames, self.configs.patch_size)
+            frames = torch.FloatTensor(frames).to(self.configs.device)
+            if istrain:
+                delta_b = frames[:,1:,:,:,:] - frames[:,:-1,:,:,:]
+                frames_tensor = delta_b.detach().clone()
+                frames_tensor = frames.permute(0, 1, 3, 4, 2).contiguous()
+            mask_true = mask_true[:,:,:,:int(height/2),:int(width/2)]
+            """
+            tcA = tcA[:,1:,:,:,:]
+            tcH = tcH[:,1:,:,:,:]
+            tcV = tcV[:,1:,:,:,:]
+            tcD = tcD[:,1:,:,:,:]
+            """
+        #print(frames.shape)
         h_t = []
         c_t = []
         delta_c_list = []
@@ -57,16 +98,24 @@ class RNN(nn.Module):
         decouple_loss = []
 
         for i in range(self.num_layers):
-            zeros = torch.zeros([batch, self.num_hidden[i], height, width]).to(self.configs.device)
+            if self.configs.is_WV:
+                zeros = torch.zeros([batch, self.num_hidden[i], int(height/2),int(width/2)]).to(self.configs.device)
+            else:
+                zeros = torch.zeros([batch, self.num_hidden[i], height,width]).to(self.configs.device)
             h_t.append(zeros)
             c_t.append(zeros)
             delta_c_list.append(zeros)
             delta_m_list.append(zeros)
-
-        memory = torch.zeros([batch, self.num_hidden[0], height, width]).to(self.configs.device)
+        
         loss = 0
-        next_frames = torch.empty(batch, self.configs.total_length - 1, 
-                                  height, width, self.frame_channel).to(self.configs.device)
+        if self.configs.is_WV:
+            memory = torch.zeros([batch, self.num_hidden[0], int(height/2),int(width/2)]).to(self.configs.device)
+            next_frames = torch.empty(batch, self.configs.total_length - 1, 
+                                          int(height/2),int(width/2), self.frame_channel).to(self.configs.device)
+        else:
+            memory = torch.zeros([batch, self.num_hidden[0], height,width]).to(self.configs.device)
+            next_frames = torch.empty(batch, self.configs.total_length - 1, 
+                                          height,width, self.frame_channel).to(self.configs.device)
         for t in range(self.configs.total_length - 1):
             # print(t)
             if self.configs.reverse_scheduled_sampling == 1:
@@ -115,7 +164,35 @@ class RNN(nn.Module):
         decouple_loss = torch.mean(torch.stack(decouple_loss, dim=0))
         # [length, batch, channel, height, width] -> [batch, length, height, width, channel]
         if istrain:
-            loss = self.MSE_criterion(next_frames, frames_tensor[:, 1:]) + self.configs.decouple_beta * decouple_loss
+            loss = self.MSE_criterion(next_frames*self.layer_weights, frames_tensor[:,1:]*self.layer_weights) + \
+                    self.configs.decouple_beta * decouple_loss
             next_frames = None
             torch.cuda.empty_cache()
+        else:
+            if self.configs.is_WV:
+                #next_frames = preprocess.reshape_patch_back(next_frames.detach().cpu().numpy(), 
+                #                                              self.configs.patch_size)
+                prev_frames = frames[:,1:].permute(0, 1, 3, 4, 2).contiguous()
+                prev_frames = prev_frames.detach().cpu().numpy()
+                next_frames = next_frames.detach().cpu().numpy()
+                ###Wavelet transform
+                srcoeffs = (0.5*next_frames[...,:int(self.frame_channel/4)] + \
+                            0.5*prev_frames[...,:int(self.frame_channel/4)],
+                            (0.5*next_frames[...,int(self.frame_channel/4):int(self.frame_channel/4)*2] + \
+                             0.5*prev_frames[...,int(self.frame_channel/4):int(self.frame_channel/4)*2],
+                             0.5*next_frames[...,int(self.frame_channel/4)*2:int(self.frame_channel/4)*3] + \
+                             0.5*prev_frames[...,int(self.frame_channel/4)*2:int(self.frame_channel/4)*3],
+                             0.5*next_frames[...,int(self.frame_channel/4)*3:int(self.frame_channel)] + \
+                            0.5*prev_frames[...,int(self.frame_channel/4)*3:int(self.frame_channel)]))
+                """
+                srcoeffs = (next_frames[...,:int(self.frame_channel/4)],
+                            (next_frames[...,int(self.frame_channel/4):int(self.frame_channel/4)*2],
+                             next_frames[...,int(self.frame_channel/4)*2:int(self.frame_channel/4)*3],
+                             next_frames[...,int(self.frame_channel/4)*3:int(self.frame_channel)]))
+                #srcoeffs = (tcA[:, 1:], (tcH[:, 1:], tcV[:, 1:], tcD[:, 1:]))
+                print(tcA.shape)
+                """
+                next_frames = pw.idwt2(srcoeffs, 'db1', axes = (-3,-2))
+                #next_frames = preprocess.reshape_patch(next_frames, self.configs.patch_size)
+                next_frames = torch.FloatTensor(next_frames).to(self.configs.device)
         return next_frames, loss

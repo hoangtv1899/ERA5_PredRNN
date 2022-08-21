@@ -16,7 +16,12 @@ def train(model, ims, real_input_flag, configs, itr):
         ims_rev = np.flip(ims, axis=1).copy()
         cost += model.train(ims_rev, real_input_flag)
         cost = cost / 2
-
+    
+    if cost < configs.curr_best_loss:
+        print('current best loss: '+str(np.round(cost,6)))
+        configs.curr_best_loss = cost
+        model.save('best')
+    
     if itr % configs.display_interval == 0:
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'itr: ' + str(itr))
         print('training loss: ' + str(cost))
@@ -31,7 +36,6 @@ def test(model, test_input_handle, configs, itr):
     batch_id = 0
     img_mse, ssim, psnr = [], [], []
     lp = []
-
     for i in range(configs.total_length - configs.input_length):
         img_mse.append(0)
         ssim.append(0)
@@ -43,13 +47,13 @@ def test(model, test_input_handle, configs, itr):
         mask_input = 1
     else:
         mask_input = configs.input_length
-
+    
     real_input_flag = np.zeros(
-        (configs.batch_size,
-         configs.total_length - mask_input - 1,
-         configs.img_height // configs.patch_size,
-         configs.img_width // configs.patch_size,
-         configs.patch_size ** 2 * configs.img_channel))
+            (configs.batch_size,
+             configs.total_length - mask_input - 1,
+             configs.img_height // configs.patch_size,
+             configs.img_width // configs.patch_size,
+             configs.patch_size ** 2 * configs.img_channel))
 
     if configs.reverse_scheduled_sampling == 1:
         real_input_flag[:, :configs.input_length - 1, :, :] = 1.0
@@ -61,7 +65,6 @@ def test(model, test_input_handle, configs, itr):
         #test_ims = test_ims * layer_weights
         test_dat = preprocess.reshape_patch(test_ims, configs.patch_size)
         img_gen = model.test(test_dat, real_input_flag)
-
         img_gen = preprocess.reshape_patch_back(img_gen, configs.patch_size)
         output_length = configs.total_length - configs.input_length 
         img_out = img_gen.copy()

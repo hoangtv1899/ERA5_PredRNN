@@ -33,7 +33,7 @@ class Model(object):
 
     def load(self, checkpoint_path):
         print('load model:', checkpoint_path)
-        stats = torch.load(checkpoint_path)
+        stats = torch.load(checkpoint_path, map_location=torch.device(self.configs.device))
         self.network.load_state_dict(stats['net_param'])
 
     def train(self, frames, mask, istrain=True):
@@ -55,13 +55,13 @@ class Model(object):
         mask_tensor = torch.FloatTensor(mask).to(self.configs.device)
         final_next_frames = []
         for i in range(self.configs.concurent_step):
-            print(i)
+            #print(i)
             with torch.no_grad():
                 next_frames, _ = self.network(frames_tensor[:,input_length*i:input_length*i+total_length,:,:,:], 
                                           mask_tensor,
                                           istrain=istrain)
             frames_tensor[:,input_length*i+1:input_length*i+total_length,:,:,:] = next_frames
-            final_next_frames.append(next_frames.detach().cpu().numpy()[:,-output_length:,:,:,:])
+            final_next_frames.append(next_frames[:,-output_length:,:,:,:].detach().cpu().numpy())
             del next_frames
             torch.cuda.empty_cache()
         return np.hstack(final_next_frames)
