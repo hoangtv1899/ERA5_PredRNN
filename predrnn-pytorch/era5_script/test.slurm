@@ -5,7 +5,7 @@
 #SBATCH --mem=64G               # memory per cpu-core (4G is default)
 #SBATCH -A DMS21038
 #SBATCH -p gpu-a100
-#SBATCH --time=00:18:00          # total run time limit (HH:MM:SS)
+#SBATCH --time=00:12:00          # total run time limit (HH:MM:SS)
 #SBATCH --mail-type=end          # send email when job ends
 #SBATCH --mail-user=hoang.tran@pnnl.gov
 

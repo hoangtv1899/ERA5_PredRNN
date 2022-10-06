@@ -9,6 +9,8 @@ from core.data_provider import datasets_factory
 from core.models.model_factory import Model
 from core.utils import preprocess
 import core.trainer as trainer
+import pywt as pw
+import torch.nn as nn
 
 # -----------------------------------------------------------------------------
 parser = argparse.ArgumentParser(description='PyTorch video prediction model - PredRNN')
@@ -87,13 +89,13 @@ parser.add_argument('--out_channel', type=int, default=5)
 parser.add_argument('--stat_layers', type=int, default=8)
 parser.add_argument('--stat_layers2', type=int, default=5)
 parser.add_argument('--out_weights', type=str, default='')
-parser.add_argument('--curr_best_loss', type=float, default=1e6)
+parser.add_argument('--curr_best_loss', type=float, default=1e5)
 parser.add_argument('--isloss', type=int, default=1)
 parser.add_argument('--is_logscale', type=int, default=0)
+parser.add_argument('--is_WV', type=int, default=0)
 
 args = parser.parse_args()
 print(args)
-
 
 def reserve_schedule_sampling_exp(itr):
     if itr < args.r_sampling_step_1:
@@ -138,7 +140,7 @@ def reserve_schedule_sampling_exp(itr):
                     real_input_flag.append(ones)
                 else:
                     real_input_flag.append(zeros)
-
+    
     real_input_flag = np.array(real_input_flag)
     real_input_flag = np.reshape(real_input_flag,
                                  (args.batch_size,
@@ -199,21 +201,19 @@ def train_wrapper(model):
         is_training=True)
 
     eta = args.sampling_start_value
-
+    
     for itr in range(1, args.max_iterations + 1):
         if train_input_handle.no_batch_left():
             train_input_handle.begin(do_shuffle=True)
         ims = train_input_handle.get_batch()
         ims = ims[:,:,:,:,:args.img_channel]
         ims = preprocess.reshape_patch(ims, args.patch_size)
-
         if args.reverse_scheduled_sampling == 1:
             real_input_flag = reserve_schedule_sampling_exp(itr)
         else:
             eta, real_input_flag = schedule_sampling(eta, itr)
         
         trainer.train(model, ims, real_input_flag, args, itr)
-
         if itr % args.snapshot_interval == 0:
             model.save(itr)
 
@@ -221,7 +221,6 @@ def train_wrapper(model):
             trainer.test(model, test_input_handle, args, itr)
 
         train_input_handle.next()
-
 
 def test_wrapper(model):
     model.load(args.pretrained_model)
@@ -243,6 +242,8 @@ os.makedirs(args.gen_frm_dir)
 print('Initializing models')
 
 model = Model(args)
+#model= nn.DataParallel(model)
+#model.to(args.device)
 
 if args.is_training:
     train_wrapper(model)

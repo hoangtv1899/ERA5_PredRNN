@@ -18,11 +18,12 @@ class RNN(nn.Module):
         self.visual = self.configs.visual
         self.visual_path = self.configs.visual_path
         if configs.is_WV:
-            self.configs.img_channel = self.configs.img_channel * 4
+            self.configs.img_channel = self.configs.img_channel * 10
 
         self.frame_channel = configs.patch_size * configs.patch_size * configs.img_channel
         self.num_layers = num_layers
         self.num_hidden = num_hidden
+        self.last_patch = 5
         cell_list = []
         
         if configs.use_weight ==1 :
@@ -34,17 +35,23 @@ class RNN(nn.Module):
                     sys.exit()
                 self.layer_weights = np.repeat(self.layer_weights, configs.patch_size * configs.patch_size)[np.newaxis,...]
             else:
-                self.layer_weights = np.repeat(self.layer_weights, configs.patch_size * configs.patch_size *4)[np.newaxis,...]
+                self.layer_weights = np.repeat(self.layer_weights, 3*(self.last_patch*4)**2 + \
+                                                                   3*(self.last_patch*2)**2 + \
+                                                                   4*(self.last_patch)**2)[np.newaxis,...]
         else:
             self.layer_weights = np.ones((1))
         #print(self.layer_weights.shape)
         
-        self.layer_weights = torch.FloatTensor(self.layer_weights).to(self.configs.device)
+        self.layer_weights = torch.FloatTensor(self.layer_weights).to('cuda:1')
         height = configs.img_height // configs.patch_size
         width = configs.img_width // configs.patch_size
         
         if configs.is_WV:
-            height, width = int(height/2), int(width/2)
+            height = int(configs.img_height/2) // (self.last_patch*4)
+            width = int(configs.img_width/2) // (self.last_patch*4)
+            self.frame_channel = 6 * (3*(self.last_patch*4)**2 + \
+                                       3*(self.last_patch*2)**2 + \
+                                       4*(self.last_patch)**2)
         
         self.MSE_criterion = nn.MSELoss()
 
@@ -52,11 +59,11 @@ class RNN(nn.Module):
             in_channel = self.frame_channel if i == 0 else num_hidden[i - 1]
             cell_list.append(
                 SpatioTemporalLSTMCell(in_channel, num_hidden[i], height, width, configs.filter_size,
-                                       configs.stride, configs.layer_norm)
+                                       configs.stride, configs.layer_norm).to("cuda:1")
             )
         self.cell_list = nn.ModuleList(cell_list)
         self.conv_last = nn.Conv2d(num_hidden[num_layers - 1], self.frame_channel, kernel_size=1, stride=1, padding=0,
-                                   bias=False)
+                                   bias=False).to("cuda:2")
         # shared adapter
         adapter_num_hidden = num_hidden[0]
         self.adapter = nn.Conv2d(adapter_num_hidden, adapter_num_hidden, 1, stride=1, padding=0, bias=False)
@@ -70,16 +77,55 @@ class RNN(nn.Module):
         height = frames.shape[3]
         width = frames.shape[4]
         if self.configs.is_WV:
-            tcoeffs = pw.dwt2(frames.detach().cpu().numpy(), 'db1', axes = (-2,-1))
-            tcA, (tcH, tcV, tcD) = tcoeffs
-            frames = np.concatenate(((tcA, tcH, tcV, tcD)), axis=2)
+            curr_height = int(self.configs.img_height/2) // (self.last_patch*4)
+            curr_width = int(self.configs.img_width/2) // (self.last_patch*4)
+            frames_tensor = preprocess.reshape_patch_back(frames_tensor.detach().cpu().numpy(),self.configs.patch_size)
+            tcoeffs = pw.wavedec2(frames_tensor, 'db1', axes = (-3,-2), level=3)
+            (tcA3, (tcH3, tcV3, tcD3), (tcH2, tcV2, tcD2), (tcH1, tcV1, tcD1)) = tcoeffs
+            #tcoeffs = pw.wavedec2(frames_tensor, 'db1', axes = (-3,-2), level=1)
+            #tcA1, (tcH1, tcV1, tcD1) = tcoeffs
+            #####Normalizing#####
+            norm_vect_H = [0.25,0.25,0.05,0.08,1,0.05]
+            norm_vect_D = [0.15,0.15,0.05,0.02,1,0.05]
+            norm_vect_A = [1.25,1.25,1.5,1.2,1.2,1.15]
+            tcH3 = tcH3 / (4 * np.array(norm_vect_H)[np.newaxis,...])
+            tcV3 = tcV3 / (4 * np.array(norm_vect_H)[np.newaxis,...])
+            tcD3 = tcD3 / (4 * np.array(norm_vect_D)[np.newaxis,...])
+            tcA3 = tcA3 / (4 * np.array(norm_vect_A)[np.newaxis,...])
+            tcH2 = tcH2 / (2 * np.array(norm_vect_H)[np.newaxis,...])
+            tcV2 = tcV2 / (2 * np.array(norm_vect_H)[np.newaxis,...])
+            tcD2 = tcD2 / (2 * np.array(norm_vect_D)[np.newaxis,...])
+            tcH1 = tcH1 / (np.array(norm_vect_H)[np.newaxis,...])
+            tcV1 = tcV1 / (np.array(norm_vect_H)[np.newaxis,...])
+            tcD1 = tcD1 / (np.array(norm_vect_D)[np.newaxis,...])
+            #####Normalizing#####
+            #####Reshaping#####
+            tcA3_reshape = preprocess.reshape_patch(tcA3, self.last_patch)
+            #tcA1_reshape = preprocess.reshape_patch(tcA1, self.last_patch*4)
+            tcH3_reshape = preprocess.reshape_patch(tcH3, self.last_patch)
+            tcV3_reshape = preprocess.reshape_patch(tcV3, self.last_patch)
+            tcD3_reshape = preprocess.reshape_patch(tcD3, self.last_patch)
+            tcH2_reshape = preprocess.reshape_patch(tcH2, self.last_patch*2)
+            tcV2_reshape = preprocess.reshape_patch(tcV2, self.last_patch*2)
+            tcD2_reshape = preprocess.reshape_patch(tcD2, self.last_patch*2)
+            tcH1_reshape = preprocess.reshape_patch(tcH1, self.last_patch*4)
+            tcV1_reshape = preprocess.reshape_patch(tcV1, self.last_patch*4)
+            tcD1_reshape = preprocess.reshape_patch(tcD1, self.last_patch*4)
+            #####Reshaping#####
+            frames = np.concatenate(((tcA3_reshape, tcH3_reshape, tcV3_reshape, tcD3_reshape,
+                                     tcH2_reshape, tcV2_reshape, tcD2_reshape,
+                                     tcH1_reshape, tcV1_reshape, tcD1_reshape)), axis=4)
+            #frames = np.concatenate(((tcA1_reshape, tcH1_reshape, tcV1_reshape, tcD1_reshape)), axis=4)
+            frames = np.transpose(frames,(0, 1, 4, 2, 3))
             #frames = preprocess.reshape_patch(frames, self.configs.patch_size)
-            frames = torch.FloatTensor(frames).to(self.configs.device)
+            frames = torch.FloatTensor(frames).to('cuda:1')
             if istrain:
-                delta_b = frames[:,1:,:,:,:] - frames[:,:-1,:,:,:]
-                frames_tensor = delta_b.detach().clone()
+                #delta_b = frames[:,1:,:,:,:] - frames[:,:-1,:,:,:]
+                #frames_tensor = delta_b.detach().clone()
+                #frames_tensor = frames_tensor.permute(0, 1, 3, 4, 2).contiguous()
                 frames_tensor = frames.permute(0, 1, 3, 4, 2).contiguous()
-            mask_true = mask_true[:,:,:,:int(height/2),:int(width/2)]
+            mask_true = mask_true[:,:,:,:curr_height,:curr_width]
+            mask_true = torch.tile(mask_true[:,:,1:2,:,:],(1,1,self.frame_channel,1,1)).to("cuda:1")
             """
             tcA = tcA[:,1:,:,:,:]
             tcH = tcH[:,1:,:,:,:]
@@ -99,7 +145,7 @@ class RNN(nn.Module):
 
         for i in range(self.num_layers):
             if self.configs.is_WV:
-                zeros = torch.zeros([batch, self.num_hidden[i], int(height/2),int(width/2)]).to(self.configs.device)
+                zeros = torch.zeros([batch, self.num_hidden[i], curr_height,curr_width]).to('cuda:1')
             else:
                 zeros = torch.zeros([batch, self.num_hidden[i], height,width]).to(self.configs.device)
             h_t.append(zeros)
@@ -109,21 +155,20 @@ class RNN(nn.Module):
         
         loss = 0
         if self.configs.is_WV:
-            memory = torch.zeros([batch, self.num_hidden[0], int(height/2),int(width/2)]).to(self.configs.device)
+            memory = torch.zeros([batch, self.num_hidden[0], curr_height,curr_width]).to('cuda:1')
             next_frames = torch.empty(batch, self.configs.total_length - 1, 
-                                          int(height/2),int(width/2), self.frame_channel).to(self.configs.device)
+                                          curr_height,curr_width, self.frame_channel).to('cuda:1')
         else:
             memory = torch.zeros([batch, self.num_hidden[0], height,width]).to(self.configs.device)
             next_frames = torch.empty(batch, self.configs.total_length - 1, 
                                           height,width, self.frame_channel).to(self.configs.device)
         for t in range(self.configs.total_length - 1):
-            # print(t)
             if self.configs.reverse_scheduled_sampling == 1:
                 # reverse schedule sampling
                 if t == 0:
-                    net = frames[:, t]
+                    net =  frames[:, t].to('cuda:1')
                 else:
-                    net = mask_true[:, t - 1] * frames[:, t] + (1 - mask_true[:, t - 1]) * x_gen
+                    net = mask_true[:, t - 1] * frames[:, t] + (1 - mask_true[:, t - 1]) * x_gen.to('cuda:1')
             else:
                 # schedule sampling
                 if t < self.configs.input_length:
@@ -131,7 +176,6 @@ class RNN(nn.Module):
                 else:
                     net = mask_true[:, t - self.configs.input_length] * frames[:, t] + \
                           (1 - mask_true[:, t - self.configs.input_length]) * x_gen
-
             h_t[0], c_t[0], memory, delta_c, delta_m = self.cell_list[0](net, h_t[0], c_t[0], memory)
             delta_c_list[0] = F.normalize(self.adapter(delta_c).view(delta_c.shape[0], delta_c.shape[1], -1), dim=2)
             delta_m_list[0] = F.normalize(self.adapter(delta_m).view(delta_m.shape[0], delta_m.shape[1], -1), dim=2)
@@ -164,18 +208,87 @@ class RNN(nn.Module):
         decouple_loss = torch.mean(torch.stack(decouple_loss, dim=0))
         # [length, batch, channel, height, width] -> [batch, length, height, width, channel]
         if istrain:
-            loss = self.MSE_criterion(next_frames*self.layer_weights, frames_tensor[:,1:]*self.layer_weights) + \
-                    self.configs.decouple_beta * decouple_loss
+            loss = self.MSE_criterion(next_frames.to('cuda:2')*self.layer_weights.to('cuda:2'), frames_tensor[:,1:,:,:,:].to('cuda:2')*self.layer_weights.to('cuda:2')) + \
+                    self.configs.decouple_beta * decouple_loss.to('cuda:2')
             next_frames = None
-            torch.cuda.empty_cache()
         else:
             if self.configs.is_WV:
                 #next_frames = preprocess.reshape_patch_back(next_frames.detach().cpu().numpy(), 
                 #                                              self.configs.patch_size)
-                prev_frames = frames[:,1:].permute(0, 1, 3, 4, 2).contiguous()
-                prev_frames = prev_frames.detach().cpu().numpy()
+                #next_frames = next_frames.permute(0, 1, 4, 2, 3).contiguous()
                 next_frames = next_frames.detach().cpu().numpy()
+                curr_position = 0
+                next_position = 6*(self.last_patch)**2
+                tcA3_next = next_frames[...,int(curr_position):int(next_position)]
+                tcA3_next = preprocess.reshape_patch_back(tcA3_next, self.last_patch)
+                tcA3_next = tcA3_next * (4 * np.array(norm_vect_A)[np.newaxis,...])
+                curr_position = next_position
+                next_position += 6*(self.last_patch)**2
+                
+                tcH3_next = next_frames[...,int(curr_position):int(next_position)]
+                tcH3_next = preprocess.reshape_patch_back(tcH3_next, self.last_patch)
+                tcH3_next = tcH3_next * (4 * np.array(norm_vect_H)[np.newaxis,...])
+                curr_position = next_position
+                next_position += 6*(self.last_patch)**2
+                
+                tcV3_next = next_frames[...,int(curr_position):int(next_position)]
+                tcV3_next = preprocess.reshape_patch_back(tcV3_next, self.last_patch)
+                tcV3_next = tcV3_next * (4 * np.array(norm_vect_H)[np.newaxis,...])
+                curr_position = next_position
+                next_position += 6*(self.last_patch)**2
+                
+                tcD3_next = next_frames[...,int(curr_position):int(next_position)]
+                tcD3_next = preprocess.reshape_patch_back(tcD3_next, self.last_patch)
+                tcD3_next = tcD3_next * (4 * np.array(norm_vect_D)[np.newaxis,...])
+                curr_position = next_position
+                next_position += 6*(self.last_patch*2)**2
+                
+                tcH2_next = next_frames[...,int(curr_position):int(next_position)]
+                tcH2_next = preprocess.reshape_patch_back(tcH2_next, self.last_patch*2)
+                tcH2_next = tcH2_next * (2 * np.array(norm_vect_H)[np.newaxis,...])
+                curr_position = next_position
+                next_position += 6*(self.last_patch*2)**2
+                
+                tcV2_next = next_frames[...,int(curr_position):int(next_position)]
+                tcV2_next = preprocess.reshape_patch_back(tcV2_next, self.last_patch*2)
+                tcV2_next = tcV2_next * (2 * np.array(norm_vect_H)[np.newaxis,...])
+                curr_position = next_position
+                next_position += 6*(self.last_patch*2)**2
+                
+                tcD2_next = next_frames[...,int(curr_position):int(next_position)]
+                tcD2_next = preprocess.reshape_patch_back(tcD2_next, self.last_patch*2)
+                tcD2_next = tcD2_next * (2 * np.array(norm_vect_D)[np.newaxis,...])
+                curr_position = next_position
+                next_position += 6*(self.last_patch*4)**2
+                
+                #tcA1_next = next_frames[...,int(curr_position):int(next_position)]
+                #tcA1_next = preprocess.reshape_patch_back(tcA1_next, self.last_patch*4)
+                #tcH1_next = tcH1_next * (np.array(norm_vect_H)[np.newaxis,...])
+                #curr_position = next_position
+                #next_position += 6*(self.last_patch*4)**2
+                
+                tcH1_next = next_frames[...,int(curr_position):int(next_position)]
+                tcH1_next = preprocess.reshape_patch_back(tcH1_next, self.last_patch*4)
+                tcH1_next = tcH1_next * (np.array(norm_vect_H)[np.newaxis,...])
+                curr_position = next_position
+                next_position += 6*(self.last_patch*4)**2
+                
+                tcV1_next = next_frames[...,int(curr_position):int(next_position)]
+                tcV1_next = preprocess.reshape_patch_back(tcV1_next, self.last_patch*4)
+                tcV1_next = tcV1_next * (np.array(norm_vect_H)[np.newaxis,...])
+                curr_position = next_position
+                next_position += 6*(self.last_patch*4)**2
+                
+                tcD1_next = next_frames[...,int(curr_position):int(next_position)]
+                tcD1_next = preprocess.reshape_patch_back(tcD1_next, self.last_patch*4)
+                tcD1_next = tcD1_next * (np.array(norm_vect_D)[np.newaxis,...])
+                
+                srcoeffs = (tcA3_next,
+                        (tcH3_next, tcV3_next, tcD3_next),
+                        (tcH2_next, tcV2_next, tcD2_next),
+                        (tcH1_next, tcV1_next, tcD1_next))
                 ###Wavelet transform
+                """
                 srcoeffs = (0.5*next_frames[...,:int(self.frame_channel/4)] + \
                             0.5*prev_frames[...,:int(self.frame_channel/4)],
                             (0.5*next_frames[...,int(self.frame_channel/4):int(self.frame_channel/4)*2] + \
@@ -184,7 +297,7 @@ class RNN(nn.Module):
                              0.5*prev_frames[...,int(self.frame_channel/4)*2:int(self.frame_channel/4)*3],
                              0.5*next_frames[...,int(self.frame_channel/4)*3:int(self.frame_channel)] + \
                             0.5*prev_frames[...,int(self.frame_channel/4)*3:int(self.frame_channel)]))
-                """
+                
                 srcoeffs = (next_frames[...,:int(self.frame_channel/4)],
                             (next_frames[...,int(self.frame_channel/4):int(self.frame_channel/4)*2],
                              next_frames[...,int(self.frame_channel/4)*2:int(self.frame_channel/4)*3],
@@ -192,7 +305,7 @@ class RNN(nn.Module):
                 #srcoeffs = (tcA[:, 1:], (tcH[:, 1:], tcV[:, 1:], tcD[:, 1:]))
                 print(tcA.shape)
                 """
-                next_frames = pw.idwt2(srcoeffs, 'db1', axes = (-3,-2))
-                #next_frames = preprocess.reshape_patch(next_frames, self.configs.patch_size)
+                next_frames = pw.waverec2(srcoeffs, 'db1', axes = (-3,-2))
+                next_frames = preprocess.reshape_patch(next_frames, self.configs.patch_size)
                 next_frames = torch.FloatTensor(next_frames).to(self.configs.device)
         return next_frames, loss
