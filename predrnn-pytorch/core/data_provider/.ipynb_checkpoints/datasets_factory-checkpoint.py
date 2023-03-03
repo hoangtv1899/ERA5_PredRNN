@@ -8,21 +8,26 @@ datasets_map = {
 
 
 def data_provider(dataset_name, train_data_paths, valid_data_paths, batch_size,
-                  img_height, img_width, seq_length, injection_action, concurent_step, 
-                  is_training=True):
+                  img_height, img_width, seq_length, injection_action, concurent_step,
+                  img_channel, img_layers, is_training=True, is_WV=True):
     if dataset_name not in datasets_map:
         raise ValueError('Name of dataset unknown %s' % dataset_name)
     train_data_list = train_data_paths.split(',')
     valid_data_list = valid_data_paths.split(',')
+    img_layers = [int(x) for x in img_layers.split(',')]
     if dataset_name == 'mnist':
         test_input_param = {'paths': valid_data_list,
                             'minibatch_size': batch_size,
                             'image_height': img_height,
                             'image_width': img_width,
+                            'image_channel': img_channel,
                             'input_data_type': 'float32',
                             'concurent_step':concurent_step,
                             'is_output_sequence': True,
-                            'name': dataset_name + 'test iterator'}
+                            'name': dataset_name + 'test iterator',
+                            'img_layers': img_layers,
+                            'is_WV': is_WV
+                           }
         test_input_handle = datasets_map[dataset_name].InputHandle(test_input_param)
         test_input_handle.begin(do_shuffle=False)
         if is_training:
@@ -31,9 +36,13 @@ def data_provider(dataset_name, train_data_paths, valid_data_paths, batch_size,
                                  'input_data_type': 'float32',
                                  'image_height': img_height,
                                  'image_width': img_width,
+                                 'image_channel': img_channel,
                                  'concurent_step':1,
                                  'is_output_sequence': True,
-                                 'name': dataset_name + ' train iterator'}
+                                 'name': dataset_name + ' train iterator',
+                                 'img_layers': img_layers,
+                                 'is_WV': is_WV,
+                                }
             train_input_handle = datasets_map[dataset_name].InputHandle(train_input_param)
             train_input_handle.begin(do_shuffle=True)
             return train_input_handle, test_input_handle

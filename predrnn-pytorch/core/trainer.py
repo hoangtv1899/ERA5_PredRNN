@@ -7,6 +7,16 @@ from core.utils import preprocess, metrics
 import lpips
 import torch
 
+from scipy import ndimage
+
+def center_enhance(img, min_distance = 100, sigma=4, radii=np.arange(0, 20, 2),find_max=True,enhance=True,multiply=2):
+    if enhance:
+        filter_blurred = ndimage.gaussian_filter(img,1)
+        res_img = img + 30*(img - filter_blurred)
+    else:
+        res_img = ndimage.gaussian_filter(img,3)
+    return res_img
+
 loss_fn_alex = lpips.LPIPS(net='alex')
 
 
@@ -63,11 +73,55 @@ def test(model, test_input_handle, configs, itr):
         test_ims = test_input_handle.get_batch()
         test_ims = test_ims[:, :, :, :, :configs.img_channel]
         #test_ims = test_ims * layer_weights
-        test_dat = preprocess.reshape_patch(test_ims, configs.patch_size)
+        
+        #center enhance
+        if configs.center_enhance:
+            enh_ims = test_ims.copy()
+            layer_ims = enh_ims[0,:,:,:,configs.layer_need_enhance]
+            #unnormalize
+            layer_ims = layer_ims *(105000 - 98000) + 98000
+            zonal_mean = np.mean(1/(layer_ims[0,:,:]), axis=1) #get lattitude mean of the first time step
+            anomaly_zonal = (1/layer_ims) - zonal_mean[None,:,None]
+            #re-normalize
+            layer_ims = (anomaly_zonal + 3e-7) / 7.7e-7
+            enh_ims[0,:,:,:,configs.layer_need_enhance] = layer_ims
+            test_ims = enh_ims.copy()
+        
+        #append output length to test_ims
+        output_length = configs.total_length - configs.input_length
+        curr_shapes = test_ims.shape
+        zero_pad_arr = np.zeros((curr_shapes[0],output_length,
+                                 curr_shapes[2],curr_shapes[3],curr_shapes[4]))
+        test_ims_pad = np.concatenate([test_ims, zero_pad_arr], axis=1)
+        ##############
+        test_dat = preprocess.reshape_patch(test_ims_pad, configs.patch_size)
         img_gen = model.test(test_dat, real_input_flag)
         img_gen = preprocess.reshape_patch_back(img_gen, configs.patch_size)
         output_length = configs.total_length - configs.input_length 
         img_out = img_gen.copy()
+        ##############
+        #center de-enhance
+        if configs.center_enhance:
+            enh_ims = img_out.copy()
+            layer_ims = enh_ims[0,:,:,:,configs.layer_need_enhance]
+            #unnormalize
+            layer_ims = layer_ims * 7.7e-7 - 3e-7
+            anomaly_zonal = 1/(layer_ims + zonal_mean[None,:,None])
+            #re-normalize
+            layer_ims = (anomaly_zonal - 98000) / (105000 - 98000)
+            enh_ims[0,:,:,:,configs.layer_need_enhance] = layer_ims
+            img_out = enh_ims.copy()
+            #de-enhance for input images as well
+            enh_ims = test_ims.copy()
+            layer_ims = enh_ims[0,:,:,:,configs.layer_need_enhance]
+            #unnormalize
+            layer_ims = layer_ims * 7.7e-7 - 3e-7
+            anomaly_zonal = 1/(layer_ims + zonal_mean[None,:,None])
+            #re-normalize
+            layer_ims = (anomaly_zonal - 98000) / (105000 - 98000)
+            enh_ims[0,:,:,:,configs.layer_need_enhance] = layer_ims
+            test_ims = enh_ims.copy()
+        
         #img_out = img_out/layer_weights
         #test_ims = test_ims/layer_weights
 

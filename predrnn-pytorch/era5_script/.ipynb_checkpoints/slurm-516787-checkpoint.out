@@ -1,0 +1,373 @@
+2022-10-27 15:43:59.178193: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home1/08589/hvtran/.local/lib/python3.9/site-packages/cv2/../../lib64:/opt/apps/pmix/3.2.3/lib:/opt/apps/intel19/python3/3.9.7/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/libfabric/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib/release:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.1.217/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/tbb/lib/intel64_lin/gcc4.8:/opt/intel/compilers_and_libraries_2020.1.217/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.4.0/lib64:/opt/apps/gcc/9.4.0/lib:/usr/lib64
+2022-10-27 15:43:59.178633: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Setting up [LPIPS] perceptual loss: trunk [alex], v[0.1], spatial [off]
+Loading model from: /home1/08589/hvtran/.local/lib/python3.9/site-packages/lpips/weights/v0.1/alex.pth
+Namespace(is_training=1, device='cuda', dataset_name='mnist', train_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_10012015_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_10012016_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012017_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012018_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_08162020_6_24hr.npz', valid_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012018_6_24hr.npz', save_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn', gen_frm_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn', input_length=24, total_length=48, img_width=1440, img_height=720, img_channel=1, concurent_step=1, use_weight=0, layer_weight='20', model_name='predrnn_v2', pretrained_model='/work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-1000', num_hidden='460,460,460,460,460,460', filter_size=5, stride=1, patch_size=15, patch_size1=4, layer_norm=1, decouple_beta=0.05, reverse_scheduled_sampling=1, r_sampling_step_1=25000.0, r_sampling_step_2=50000, r_exp_alpha=2500, scheduled_sampling=1, sampling_stop_iter=50000, sampling_start_value=1.0, sampling_changing_rate=2e-05, lr=0.0002, reverse_input=1, batch_size=1, max_iterations=10000, display_interval=50, test_interval=1000000, snapshot_interval=2000, num_save_samples=10, n_gpu=1, visual=0, visual_path='./decoupling_visual', injection_action='concat', conv_on_input=0, res_on_conv=0, num_action_ch=4, is_static=0, is_scale=0, out_scale1='', out_scale2='', in_scale1='', in_scale2='', noise_val=0, out_channel=5, stat_layers=8, stat_layers2=5, out_weights='', curr_best_loss=0.011, isloss=1, is_logscale=0, is_WV=1)
+Initializing models
+load model: /work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-1000
+clips
+(2, 30, 2)
+dims
+(1, 3)
+input_raw_data
+(720, 1, 720, 1440)
+clips
+(2, 128, 2)
+dims
+(1, 3)
+input_raw_data
+(3048, 1, 720, 1440)
+current best loss: 0.010754
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.01054
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 16:17:29 itr: 50
+training loss: 0.011333380825817585
+current best loss: 0.010512
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.010253
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.010169
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.009938
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.009933
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.009693
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.009382
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.008946
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.008506
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 16:37:51 itr: 100
+training loss: 0.009270692244172096
+current best loss: 0.008265
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.008258
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.008084
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.007546
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.007472
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.006841
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 16:58:01 itr: 150
+training loss: 0.00759671488776803
+current best loss: 0.006671
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.006495
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 17:17:55 itr: 200
+training loss: 0.006814936641603708
+current best loss: 0.006364
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.006288
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.006251
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.006063
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.005892
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 17:37:59 itr: 250
+training loss: 0.006586133036762476
+current best loss: 0.005777
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.005653
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.00544
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.005371
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.005364
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.005198
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.005139
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 17:58:12 itr: 300
+training loss: 0.00560977216809988
+current best loss: 0.005048
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.004882
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.004854
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 18:18:08 itr: 350
+training loss: 0.0053002298809587955
+current best loss: 0.0047
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.004601
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.00451
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 18:38:04 itr: 400
+training loss: 0.005872027948498726
+current best loss: 0.004481
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.004423
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.004375
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.004221
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 18:58:02 itr: 450
+training loss: 0.004603436682373285
+current best loss: 0.00417
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.004026
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 19:17:54 itr: 500
+training loss: 0.004603040404617786
+current best loss: 0.004004
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.00387
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.003764
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 19:37:49 itr: 550
+training loss: 0.003944908268749714
+current best loss: 0.003604
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 19:57:35 itr: 600
+training loss: 0.004580145236104727
+current best loss: 0.003517
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 20:17:21 itr: 650
+training loss: 0.003928032703697681
+current best loss: 0.003459
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 20:37:11 itr: 700
+training loss: 0.004364055581390858
+2022-10-27 20:56:54 itr: 750
+training loss: 0.003955361433327198
+current best loss: 0.003413
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.003372
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.003316
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.003267
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.003266
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 21:16:57 itr: 800
+training loss: 0.003690249752253294
+current best loss: 0.003264
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.003263
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.003222
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.003171
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.003163
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 21:37:00 itr: 850
+training loss: 0.0037043874617666006
+2022-10-27 21:56:42 itr: 900
+training loss: 0.0033590446691960096
+current best loss: 0.003122
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.002988
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.002976
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.002823
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 22:16:41 itr: 950
+training loss: 0.002935162978246808
+2022-10-27 22:36:23 itr: 1000
+training loss: 0.003391395788639784
+current best loss: 0.002797
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 22:56:10 itr: 1050
+training loss: 0.0029796529561281204
+current best loss: 0.002584
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-27 23:15:56 itr: 1100
+training loss: 0.0034439286682754755
+2022-10-27 23:35:39 itr: 1150
+training loss: 0.0027527797501534224
+2022-10-27 23:55:22 itr: 1200
+training loss: 0.0033987839706242085
+current best loss: 0.002529
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 00:15:09 itr: 1250
+training loss: 0.00273365480825305
+current best loss: 0.002502
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 00:34:56 itr: 1300
+training loss: 0.0038752600084990263
+current best loss: 0.002472
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 00:54:52 itr: 1350
+training loss: 0.0029119467362761497
+current best loss: 0.002457
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.002443
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.002411
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.002388
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 01:15:00 itr: 1400
+training loss: 0.003192942589521408
+current best loss: 0.002343
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 01:34:53 itr: 1450
+training loss: 0.0026666910853236914
+2022-10-28 01:54:35 itr: 1500
+training loss: 0.003272644942626357
+2022-10-28 02:14:17 itr: 1550
+training loss: 0.0024392311461269855
+current best loss: 0.002311
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.002153
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 02:34:07 itr: 1600
+training loss: 0.002579447813332081
+2022-10-28 02:53:54 itr: 1650
+training loss: 0.0024103266187012196
+current best loss: 0.002092
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 03:13:40 itr: 1700
+training loss: 0.0025039506144821644
+2022-10-28 03:33:22 itr: 1750
+training loss: 0.0025973718147724867
+2022-10-28 03:53:04 itr: 1800
+training loss: 0.0024841916747391224
+current best loss: 0.002003
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 04:12:51 itr: 1850
+training loss: 0.0023263106122612953
+2022-10-28 04:32:34 itr: 1900
+training loss: 0.002334518823772669
+2022-10-28 04:52:16 itr: 1950
+training loss: 0.0025350023061037064
+current best loss: 0.001977
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 05:12:09 itr: 2000
+training loss: 0.002241807524114847
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-2000
+current best loss: 0.00195
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 05:32:06 itr: 2050
+training loss: 0.0025999415665864944
+2022-10-28 05:51:50 itr: 2100
+training loss: 0.0022918344475328922
+current best loss: 0.001934
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 06:11:37 itr: 2150
+training loss: 0.0021300611551851034
+2022-10-28 06:31:19 itr: 2200
+training loss: 0.001998401712626219
+current best loss: 0.001884
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.001853
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.0018
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 06:51:13 itr: 2250
+training loss: 0.0024354560300707817
+current best loss: 0.001771
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.001702
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 07:11:05 itr: 2300
+training loss: 0.0018409410258755088
+2022-10-28 07:30:49 itr: 2350
+training loss: 0.0030985611956566572
+2022-10-28 07:50:34 itr: 2400
+training loss: 0.002243651542812586
+2022-10-28 08:10:18 itr: 2450
+training loss: 0.001987764146178961
+current best loss: 0.001675
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 08:30:05 itr: 2500
+training loss: 0.002016460057348013
+current best loss: 0.001674
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 08:49:52 itr: 2550
+training loss: 0.001776126679033041
+2022-10-28 09:09:34 itr: 2600
+training loss: 0.0018995600985363126
+current best loss: 0.001657
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 09:29:25 itr: 2650
+training loss: 0.0018688859418034554
+2022-10-28 09:49:14 itr: 2700
+training loss: 0.0022093409206718206
+current best loss: 0.001594
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.001556
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 10:09:12 itr: 2750
+training loss: 0.0020111100748181343
+2022-10-28 10:28:59 itr: 2800
+training loss: 0.0017701294273138046
+2022-10-28 10:48:49 itr: 2850
+training loss: 0.0016638629604130983
+current best loss: 0.001555
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.001474
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 11:08:42 itr: 2900
+training loss: 0.001756137702614069
+2022-10-28 11:28:25 itr: 2950
+training loss: 0.0018451004289090633
+2022-10-28 11:48:08 itr: 3000
+training loss: 0.0018156585283577442
+2022-10-28 12:07:51 itr: 3050
+training loss: 0.0021888138726353645
+2022-10-28 12:27:33 itr: 3100
+training loss: 0.0017621307633817196
+2022-10-28 12:47:16 itr: 3150
+training loss: 0.0023825322277843952
+2022-10-28 13:06:58 itr: 3200
+training loss: 0.002128761727362871
+2022-10-28 13:26:42 itr: 3250
+training loss: 0.0021277638152241707
+current best loss: 0.00145
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+current best loss: 0.001393
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 13:46:32 itr: 3300
+training loss: 0.0015343872364610434
+2022-10-28 14:06:13 itr: 3350
+training loss: 0.0016524934908375144
+2022-10-28 14:25:56 itr: 3400
+training loss: 0.0018250959692522883
+2022-10-28 14:45:38 itr: 3450
+training loss: 0.00185747304931283
+2022-10-28 15:05:20 itr: 3500
+training loss: 0.001612077932804823
+2022-10-28 15:25:03 itr: 3550
+training loss: 0.0014796692412346601
+current best loss: 0.001371
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 15:44:49 itr: 3600
+training loss: 0.0015167826786637306
+2022-10-28 16:04:31 itr: 3650
+training loss: 0.0018547564977779984
+current best loss: 0.001286
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-best
+2022-10-28 16:24:19 itr: 3700
+training loss: 0.0015068785287439823
+2022-10-28 16:44:02 itr: 3750
+training loss: 0.003371729049831629
+2022-10-28 17:03:45 itr: 3800
+training loss: 0.002672778442502022
+2022-10-28 17:23:28 itr: 3850
+training loss: 0.0017909344751387835
+2022-10-28 17:43:11 itr: 3900
+training loss: 0.001994023798033595
+2022-10-28 18:02:55 itr: 3950
+training loss: 0.001593967666849494
+2022-10-28 18:22:38 itr: 4000
+training loss: 0.0018038403941318393
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-4000

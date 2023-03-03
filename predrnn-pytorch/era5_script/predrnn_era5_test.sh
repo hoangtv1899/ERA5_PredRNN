@@ -2,23 +2,25 @@ export CUDA_VISIBLE_DEVICES=0,1,2
 cd ..
 python -u run1.py \
     --is_training 0 \
-    --concurent_step 7 \
+    --concurent_step 14 \
     --device cuda \
     --dataset_name mnist \
-    --train_data_paths /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_2018_6_24hr.npz \
-    --valid_data_paths /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_10212012_6_24hr.npz \
-    --save_dir /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/2012_predrnn_test \
-    --gen_frm_dir /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/2012_predrnn_test \
+    --train_data_paths /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1024002012_3_24hr.npz \
+    --valid_data_paths /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0825002005_3_24hr.npz \
+    --save_dir /scratch/08589/hvtran/predrnn-pytorch/checkpoints/2012_predrnn_test \
+    --gen_frm_dir /scratch/08589/hvtran/predrnn-pytorch/checkpoints/2012_predrnn_test \
     --model_name predrnn_v2 \
     --reverse_input 1 \
     --img_height 720 \
     --img_width 1440 \
-    --use_weight 1 \
+    --use_weight 0 \
     --layer_weight 10,10,10,10,20,20 \
-    --img_channel 6 \
+    --img_channel 3 \
+    --img_layers 0,1,2 \
     --input_length 24 \
     --total_length 48 \
-    --num_hidden 400,400,400,400 \
+    --num_hidden 512,512,512,512  \
+    --skip_time 1 \
     --filter_size 5 \
     --stride 1 \
     --patch_size 15 \
@@ -37,6 +39,11 @@ python -u run1.py \
     --conv_on_input 0 \
     --res_on_conv 0 \
     --is_WV 1 \
-    --pretrained_model /work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-500
+    --center_enhance True \
+    --layer_need_enhance 1 \
+    --find_max False \
+    --multiply 1.1 \
+    --pretrained_model /work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-best
 
 #cp /scratch/network/hvtran/era5/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-1000 /home/hvtran/
+# /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0921002022_3_24hr.npz 

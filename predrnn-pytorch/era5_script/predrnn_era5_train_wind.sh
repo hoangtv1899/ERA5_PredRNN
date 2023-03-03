@@ -4,21 +4,28 @@ python -u run1.py \
     --is_training 1 \
     --device cuda \
     --dataset_name mnist \
-    --train_data_paths /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012018_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012017_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_10012015_6_24hr.npz \
-    --valid_data_paths /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012018_6_24hr.npz \
-    --save_dir /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn1 \
-    --gen_frm_dir /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn1 \
+    --train_data_paths /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1024002012_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002015_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002016_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0827002021_3_24hr.npz \
+    --valid_data_paths /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0921002022_3_24hr.npz \
+    --save_dir /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_wind \
+    --gen_frm_dir /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_wind \
     --model_name predrnn_v2 \
     --reverse_input 1 \
     --is_WV 1 \
+    --center_enhance False \
+    --layer_need_enhance 0 \
+    --find_max False \
+    --multiply 2 \
     --img_height 720 \
     --img_width 1440 \
-    --use_weight 1 \
-    --layer_weight 10,10,10,10,20,20 \
-    --img_channel 6 \
-    --input_length 3 \
-    --total_length 6 \
-    --num_hidden 400,400,400,400 \
+    --use_weight 0 \
+    --layer_weight 20 \
+    --img_channel 1 \
+    --img_layers 0,1,2 \
+    --input_length 24 \
+    --total_length 48 \
+    --num_hidden 460,460,460,460,460,460 \
+    --skip_time 1 \
+    --wavelet db1 \
     --filter_size 5 \
     --stride 1 \
     --patch_size 15 \
@@ -31,12 +38,13 @@ python -u run1.py \
     --lr 2e-4 \
     --batch_size 1 \
     --max_iterations 10000 \
-    --display_interval 5 \
+    --display_interval 50 \
     --test_interval 1000000 \
     --snapshot_interval 2000 \
     --conv_on_input 0 \
     --res_on_conv 0 \
-    --curr_best_loss 0.61 \
-    --pretrained_model /work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-500
+    --curr_best_loss 0.00031 \
+    --pretrained_model /work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-best-wind
 
 #cp /scratch/network/hvtran/era5/predrnn-pytorch/checkpoints/era5_predrnn/model.ckpt-1000 /home/hvtran/
+#,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002015_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002016_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0827002021_3_24hr.npz

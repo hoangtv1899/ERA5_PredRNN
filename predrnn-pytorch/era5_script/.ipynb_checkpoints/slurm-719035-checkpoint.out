@@ -1,0 +1,45 @@
+2023-02-23 16:11:44.511421: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home1/08589/hvtran/.local/lib/python3.9/site-packages/cv2/../../lib64:/opt/apps/pmix/3.2.3/lib:/opt/apps/intel19/python3/3.9.7/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/libfabric/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib/release:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.1.217/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/tbb/lib/intel64_lin/gcc4.8:/opt/intel/compilers_and_libraries_2020.1.217/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.4.0/lib64:/opt/apps/gcc/9.4.0/lib:/usr/lib64
+2023-02-23 16:11:44.511901: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Setting up [LPIPS] perceptual loss: trunk [alex], v[0.1], spatial [off]
+Loading model from: /home1/08589/hvtran/.local/lib/python3.9/site-packages/lpips/weights/v0.1/alex.pth
+Namespace(is_training=1, device='cuda', dataset_name='mnist', train_data_paths='/scratch/08589/hvtran/download/era5_train_0901002000_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002001_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002002_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002003_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002004_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002005_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002006_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002007_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002008_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002009_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002010_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002011_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002012_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002013_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002014_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0825002005_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002015_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002016_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0827002021_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0921002022_3_24hr.npz', valid_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1024002012_3_24hr.npz', save_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn', gen_frm_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn', input_length=24, total_length=48, img_width=1440, img_height=720, img_channel=3, img_layers='0,1,2', concurent_step=1, use_weight=0, layer_weight='20', skip_time=1, wavelet='db1', center_enhance=True, layer_need_enhance=1, find_max=False, multiply=2.0, model_name='predrnn_v2', pretrained_model='/work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-best', num_hidden='512,512,512,512', filter_size=5, stride=1, patch_size=15, patch_size1=4, layer_norm=1, decouple_beta=0.05, reverse_scheduled_sampling=1, r_sampling_step_1=25000.0, r_sampling_step_2=50000, r_exp_alpha=2500, scheduled_sampling=1, sampling_stop_iter=50000, sampling_start_value=1.0, sampling_changing_rate=2e-05, lr=0.0005, reverse_input=1, batch_size=1, max_iterations=10000, display_interval=50, test_interval=1000000, snapshot_interval=2000, num_save_samples=10, n_gpu=1, visual=0, visual_path='./decoupling_visual', injection_action='concat', conv_on_input=0, res_on_conv=0, num_action_ch=4, is_static=0, is_scale=0, out_scale1='', out_scale2='', in_scale1='', in_scale2='', noise_val=0, out_channel=5, stat_layers=8, stat_layers2=5, out_weights='', curr_best_loss=0.008, isloss=1, is_logscale=0, is_WV=1)
+Initializing models
+load model: /work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-best
+clips
+(2, 14, 2)
+dims
+(1, 3)
+input_raw_data
+(336, 3, 720, 1440)
+clips
+(2, 121, 2)
+dims
+(1, 3)
+input_raw_data
+(2928, 3, 720, 1440)
+2023-02-23 16:45:47 itr: 50
+training loss: 0.015668343752622604
+2023-02-23 17:09:00 itr: 100
+training loss: 0.013133198022842407
+clips
+(2, 14, 2)
+dims
+(1, 3)
+input_raw_data
+(336, 3, 720, 1440)
+clips
+(2, 74, 2)
+dims
+(1, 3)
+input_raw_data
+(1800, 3, 720, 1440)
+2023-02-23 17:38:54 itr: 150
+training loss: 0.020894575864076614
+clips
+(2, 14, 2)
+dims
+(1, 3)
+input_raw_data
+(336, 3, 720, 1440)
+warning: length of image layers is not consistent with the specified image channel! Using default!
+predrnn_era5_train.sh: line 47: 3602027 Killed                  python -u run1.py --is_training 1 --device cuda --dataset_name mnist --train_data_paths /scratch/08589/hvtran/download/era5_train_0901002000_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002001_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002002_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002003_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002004_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002005_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002006_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002007_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002008_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002009_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002010_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002011_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002012_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002013_3_24hr.npz,/scratch/08589/hvtran/download/era5_train_0901002014_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0825002005_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002015_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002016_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0827002021_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0921002022_3_24hr.npz --valid_data_paths /work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1024002012_3_24hr.npz --save_dir /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn --gen_frm_dir /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn --model_name predrnn_v2 --reverse_input 1 --is_WV 1 --center_enhance True --layer_need_enhance 1 --find_max False --multiply 2 --img_height 720 --img_width 1440 --use_weight 0 --layer_weight 20 --img_channel 3 --img_layers 0,1,2 --input_length 24 --total_length 48 --num_hidden 512,512,512,512 --skip_time 1 --wavelet db1 --filter_size 5 --stride 1 --patch_size 15 --layer_norm 1 --decouple_beta 0.05 --reverse_scheduled_sampling 1 --r_sampling_step_1 25000 --r_sampling_step_2 50000 --r_exp_alpha 2500 --lr 5e-4 --batch_size 1 --max_iterations 10000 --display_interval 50 --test_interval 1000000 --snapshot_interval 2000 --conv_on_input 0 --res_on_conv 0 --curr_best_loss 0.008 --pretrained_model /work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-best

@@ -1,0 +1,28 @@
+2022-12-28 14:16:07.820937: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home1/08589/hvtran/.local/lib/python3.9/site-packages/cv2/../../lib64:/opt/apps/pmix/3.2.3/lib:/opt/apps/intel19/python3/3.9.7/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/libfabric/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib/release:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.1.217/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/tbb/lib/intel64_lin/gcc4.8:/opt/intel/compilers_and_libraries_2020.1.217/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.4.0/lib64:/opt/apps/gcc/9.4.0/lib:/usr/lib64
+2022-12-28 14:16:07.821383: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Setting up [LPIPS] perceptual loss: trunk [alex], v[0.1], spatial [off]
+Loading model from: /home1/08589/hvtran/.local/lib/python3.9/site-packages/lpips/weights/v0.1/alex.pth
+Namespace(is_training=1, device='cuda', dataset_name='mnist', train_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1024002012_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002015_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_1001002016_3_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0827002021_3_24hr.npz', valid_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_0921002022_3_24hr.npz', save_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_precip', gen_frm_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_precip', input_length=24, total_length=48, img_width=1440, img_height=720, img_channel=1, img_layers='2,1,0', concurent_step=1, use_weight=0, layer_weight='20', skip_time=1, wavelet='db1', center_enhance=False, layer_need_enhance=0, find_max=False, multiply=2.0, model_name='predrnn_v2', pretrained_model='', num_hidden='460,460,460,460,460,460', filter_size=5, stride=1, patch_size=15, patch_size1=4, layer_norm=1, decouple_beta=0.05, reverse_scheduled_sampling=1, r_sampling_step_1=25000.0, r_sampling_step_2=50000, r_exp_alpha=2500, scheduled_sampling=1, sampling_stop_iter=50000, sampling_start_value=1.0, sampling_changing_rate=2e-05, lr=0.0002, reverse_input=1, batch_size=1, max_iterations=10000, display_interval=50, test_interval=1000000, snapshot_interval=2000, num_save_samples=10, n_gpu=1, visual=0, visual_path='./decoupling_visual', injection_action='concat', conv_on_input=0, res_on_conv=0, num_action_ch=4, is_static=0, is_scale=0, out_scale1='', out_scale2='', in_scale1='', in_scale2='', noise_val=0, out_channel=5, stat_layers=8, stat_layers2=5, out_weights='', curr_best_loss=0.015, isloss=1, is_logscale=0, is_WV=1)
+Initializing models
+clips
+(2, 14, 2)
+dims
+(1, 3)
+input_raw_data
+(336, 1, 720, 1440)
+clips
+(2, 55, 2)
+dims
+(1, 3)
+input_raw_data
+(1344, 1, 720, 1440)
+2022-12-28 14:40:59 itr: 50
+training loss: 0.14767758548259735
+2022-12-28 15:00:20 itr: 100
+training loss: 0.11762124300003052
+2022-12-28 15:19:40 itr: 150
+training loss: 0.10471762716770172
+2022-12-28 15:39:03 itr: 200
+training loss: 0.09299661219120026
+2022-12-28 15:58:25 itr: 250
+training loss: 0.08953580260276794

@@ -1,0 +1,301 @@
+2022-10-13 02:17:09.375544: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home1/08589/hvtran/.local/lib/python3.9/site-packages/cv2/../../lib64:/opt/apps/pmix/3.2.3/lib:/opt/apps/intel19/python3/3.9.7/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/libfabric/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib/release:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.1.217/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/tbb/lib/intel64_lin/gcc4.8:/opt/intel/compilers_and_libraries_2020.1.217/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.4.0/lib64:/opt/apps/gcc/9.4.0/lib:/usr/lib64
+2022-10-13 02:17:09.376509: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Setting up [LPIPS] perceptual loss: trunk [alex], v[0.1], spatial [off]
+Loading model from: /home1/08589/hvtran/.local/lib/python3.9/site-packages/lpips/weights/v0.1/alex.pth
+Namespace(is_training=1, device='cuda', dataset_name='mnist', train_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_10012015_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_10012016_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012017_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012018_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_08162020_6_24hr.npz', valid_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012018_6_24hr.npz', save_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn1', gen_frm_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn1', input_length=24, total_length=48, img_width=1440, img_height=720, img_channel=6, concurent_step=1, use_weight=1, layer_weight='10,10,10,10,20,20', model_name='predrnn_v2', pretrained_model='/work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-500', num_hidden='400,400,400,400', filter_size=5, stride=1, patch_size=15, patch_size1=4, layer_norm=1, decouple_beta=0.05, reverse_scheduled_sampling=1, r_sampling_step_1=25000.0, r_sampling_step_2=50000, r_exp_alpha=2500, scheduled_sampling=1, sampling_stop_iter=50000, sampling_start_value=1.0, sampling_changing_rate=2e-05, lr=0.0002, reverse_input=1, batch_size=1, max_iterations=10000, display_interval=5, test_interval=1000000, snapshot_interval=1000, num_save_samples=10, n_gpu=1, visual=0, visual_path='./decoupling_visual', injection_action='concat', conv_on_input=0, res_on_conv=0, num_action_ch=4, is_static=0, is_scale=0, out_scale1='', out_scale2='', in_scale1='', in_scale2='', noise_val=0, out_channel=5, stat_layers=8, stat_layers2=5, out_weights='', curr_best_loss=0.65, isloss=1, is_logscale=0, is_WV=1)
+Initializing models
+load model: /work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-500
+input_raw_data
+(720, 6, 720, 1440)
+dims
+(1, 3)
+clips
+(2, 30, 2)
+input_raw_data
+(3048, 6, 720, 1440)
+dims
+(1, 3)
+clips
+(2, 128, 2)
+2022-10-13 02:35:36 itr: 5
+training loss: 0.8516861200332642
+2022-10-13 02:39:41 itr: 10
+training loss: 0.9328827857971191
+2022-10-13 02:43:39 itr: 15
+training loss: 0.7817540764808655
+2022-10-13 02:47:39 itr: 20
+training loss: 0.8443596959114075
+2022-10-13 02:51:38 itr: 25
+training loss: 0.909995436668396
+2022-10-13 02:55:39 itr: 30
+training loss: 0.7864082455635071
+2022-10-13 02:59:39 itr: 35
+training loss: 0.8139617443084717
+2022-10-13 03:03:39 itr: 40
+training loss: 0.7657276391983032
+2022-10-13 03:07:40 itr: 45
+training loss: 0.8185943365097046
+2022-10-13 03:11:41 itr: 50
+training loss: 0.8394243717193604
+2022-10-13 03:15:41 itr: 55
+training loss: 0.7461022138595581
+2022-10-13 03:19:41 itr: 60
+training loss: 0.7974416017532349
+2022-10-13 03:23:41 itr: 65
+training loss: 0.7354918122291565
+2022-10-13 03:27:40 itr: 70
+training loss: 0.7968343496322632
+2022-10-13 03:31:40 itr: 75
+training loss: 0.8210741281509399
+2022-10-13 03:35:33 itr: 80
+training loss: 0.7696361541748047
+2022-10-13 03:39:43 itr: 85
+training loss: 0.7948945760726929
+2022-10-13 03:43:39 itr: 90
+training loss: 0.7985326051712036
+2022-10-13 03:47:35 itr: 95
+training loss: 0.8173183798789978
+2022-10-13 03:51:40 itr: 100
+training loss: 0.7377604246139526
+2022-10-13 03:55:43 itr: 105
+training loss: 0.7712417840957642
+2022-10-13 03:59:17 itr: 110
+training loss: 0.7351044416427612
+2022-10-13 04:02:53 itr: 115
+training loss: 0.759239912033081
+2022-10-13 04:06:29 itr: 120
+training loss: 0.7511488199234009
+2022-10-13 04:10:16 itr: 125
+training loss: 0.7264899015426636
+2022-10-13 04:14:37 itr: 130
+training loss: 0.7218334674835205
+2022-10-13 04:19:06 itr: 135
+training loss: 0.7295060753822327
+2022-10-13 04:23:14 itr: 140
+training loss: 0.754955530166626
+2022-10-13 04:27:41 itr: 145
+training loss: 0.7459225654602051
+2022-10-13 04:32:13 itr: 150
+training loss: 0.7169578671455383
+2022-10-13 04:36:39 itr: 155
+training loss: 0.7107405662536621
+2022-10-13 04:41:12 itr: 160
+training loss: 0.7651916742324829
+2022-10-13 04:45:58 itr: 165
+training loss: 0.7147037982940674
+2022-10-13 04:51:08 itr: 170
+training loss: 0.7536959648132324
+2022-10-13 04:56:17 itr: 175
+training loss: 0.7117096185684204
+2022-10-13 05:01:19 itr: 180
+training loss: 0.7216051816940308
+2022-10-13 05:06:31 itr: 185
+training loss: 0.7382439374923706
+2022-10-13 05:11:44 itr: 190
+training loss: 0.7228025794029236
+2022-10-13 05:16:52 itr: 195
+training loss: 0.7574595212936401
+2022-10-13 05:22:01 itr: 200
+training loss: 0.779589056968689
+2022-10-13 05:27:12 itr: 205
+training loss: 0.7498040199279785
+2022-10-13 05:32:21 itr: 210
+training loss: 0.7057573199272156
+2022-10-13 05:36:22 itr: 215
+training loss: 0.7653886675834656
+2022-10-13 05:39:50 itr: 220
+training loss: 0.686820387840271
+2022-10-13 05:43:23 itr: 225
+training loss: 0.7214141488075256
+2022-10-13 05:46:54 itr: 230
+training loss: 0.6970758438110352
+2022-10-13 05:50:31 itr: 235
+training loss: 0.7560211420059204
+2022-10-13 05:54:07 itr: 240
+training loss: 0.7028407454490662
+2022-10-13 05:57:53 itr: 245
+training loss: 0.7514431476593018
+2022-10-13 06:01:56 itr: 250
+training loss: 0.7263009548187256
+2022-10-13 06:05:51 itr: 255
+training loss: 0.7343834638595581
+2022-10-13 06:09:28 itr: 260
+training loss: 0.7104476094245911
+2022-10-13 06:13:02 itr: 265
+training loss: 0.7086395621299744
+2022-10-13 06:16:42 itr: 270
+training loss: 0.6936845779418945
+2022-10-13 06:20:36 itr: 275
+training loss: 0.7702341675758362
+2022-10-13 06:24:23 itr: 280
+training loss: 0.6864566802978516
+2022-10-13 06:28:18 itr: 285
+training loss: 0.7475452423095703
+2022-10-13 06:32:14 itr: 290
+training loss: 0.8531548976898193
+2022-10-13 06:36:11 itr: 295
+training loss: 0.7364414930343628
+2022-10-13 06:40:07 itr: 300
+training loss: 0.7018653154373169
+2022-10-13 06:43:55 itr: 305
+training loss: 0.7576181888580322
+2022-10-13 06:47:54 itr: 310
+training loss: 0.7049598693847656
+2022-10-13 06:51:46 itr: 315
+training loss: 0.7188653349876404
+2022-10-13 06:55:34 itr: 320
+training loss: 0.7200330495834351
+2022-10-13 06:59:25 itr: 325
+training loss: 0.717598021030426
+2022-10-13 07:03:23 itr: 330
+training loss: 0.7123106718063354
+2022-10-13 07:07:16 itr: 335
+training loss: 0.7292327880859375
+2022-10-13 07:11:17 itr: 340
+training loss: 0.7033707499504089
+2022-10-13 07:15:16 itr: 345
+training loss: 0.697271466255188
+2022-10-13 07:19:15 itr: 350
+training loss: 0.7428222894668579
+2022-10-13 07:23:21 itr: 355
+training loss: 0.7047370076179504
+2022-10-13 07:27:16 itr: 360
+training loss: 0.7055623531341553
+2022-10-13 07:31:03 itr: 365
+training loss: 0.716549813747406
+2022-10-13 07:35:03 itr: 370
+training loss: 0.7071410417556763
+2022-10-13 07:39:12 itr: 375
+training loss: 0.7296107411384583
+2022-10-13 07:43:30 itr: 380
+training loss: 0.6878072023391724
+2022-10-13 07:47:29 itr: 385
+training loss: 0.6952246427536011
+2022-10-13 07:51:06 itr: 390
+training loss: 0.7435317039489746
+2022-10-13 07:54:47 itr: 395
+training loss: 0.6996325254440308
+2022-10-13 07:58:32 itr: 400
+training loss: 0.7035590410232544
+2022-10-13 08:02:15 itr: 405
+training loss: 0.7013469934463501
+2022-10-13 08:06:01 itr: 410
+training loss: 0.7239631414413452
+2022-10-13 08:09:52 itr: 415
+training loss: 0.7115827798843384
+2022-10-13 08:13:46 itr: 420
+training loss: 0.7293537259101868
+2022-10-13 08:17:39 itr: 425
+training loss: 0.7893552780151367
+2022-10-13 08:21:38 itr: 430
+training loss: 0.7141224145889282
+2022-10-13 08:25:37 itr: 435
+training loss: 0.7071423530578613
+2022-10-13 08:29:28 itr: 440
+training loss: 0.696956992149353
+2022-10-13 08:33:30 itr: 445
+training loss: 0.7163234949111938
+2022-10-13 08:37:36 itr: 450
+training loss: 0.7212789058685303
+2022-10-13 08:41:24 itr: 455
+training loss: 0.7319338321685791
+2022-10-13 08:45:12 itr: 460
+training loss: 0.7092596292495728
+2022-10-13 08:49:03 itr: 465
+training loss: 0.7055929899215698
+2022-10-13 08:52:46 itr: 470
+training loss: 0.7021830081939697
+2022-10-13 08:56:33 itr: 475
+training loss: 0.7089871168136597
+2022-10-13 09:00:18 itr: 480
+training loss: 0.7518064975738525
+2022-10-13 09:04:06 itr: 485
+training loss: 0.7032424807548523
+2022-10-13 09:07:49 itr: 490
+training loss: 0.6905694007873535
+2022-10-13 09:11:38 itr: 495
+training loss: 0.696959912776947
+2022-10-13 09:15:27 itr: 500
+training loss: 0.6681453585624695
+2022-10-13 09:19:13 itr: 505
+training loss: 0.6958932876586914
+2022-10-13 09:23:02 itr: 510
+training loss: 0.7373897433280945
+2022-10-13 09:26:52 itr: 515
+training loss: 0.6653263568878174
+2022-10-13 09:30:39 itr: 520
+training loss: 0.6978470087051392
+2022-10-13 09:34:33 itr: 525
+training loss: 0.7162748575210571
+2022-10-13 09:38:27 itr: 530
+training loss: 0.6951444149017334
+2022-10-13 09:42:19 itr: 535
+training loss: 0.7403506636619568
+2022-10-13 09:46:12 itr: 540
+training loss: 0.6953433752059937
+2022-10-13 09:49:57 itr: 545
+training loss: 0.7604601383209229
+2022-10-13 09:53:40 itr: 550
+training loss: 0.689031720161438
+2022-10-13 09:57:26 itr: 555
+training loss: 0.697206974029541
+2022-10-13 10:01:05 itr: 560
+training loss: 0.6997458934783936
+2022-10-13 10:04:52 itr: 565
+training loss: 0.6750563383102417
+2022-10-13 10:08:33 itr: 570
+training loss: 0.7442945241928101
+2022-10-13 10:12:22 itr: 575
+training loss: 0.6777675747871399
+2022-10-13 10:16:15 itr: 580
+training loss: 0.6668998003005981
+2022-10-13 10:20:05 itr: 585
+training loss: 0.7011087536811829
+2022-10-13 10:23:53 itr: 590
+training loss: 0.71738201379776
+2022-10-13 10:27:44 itr: 595
+training loss: 0.7189685702323914
+2022-10-13 10:31:42 itr: 600
+training loss: 0.7038403749465942
+2022-10-13 10:35:41 itr: 605
+training loss: 0.6878807544708252
+2022-10-13 10:39:40 itr: 610
+training loss: 0.6946406960487366
+2022-10-13 10:43:33 itr: 615
+training loss: 0.6708727478981018
+2022-10-13 10:47:31 itr: 620
+training loss: 0.6735376119613647
+2022-10-13 10:51:32 itr: 625
+training loss: 0.710895299911499
+2022-10-13 10:55:33 itr: 630
+training loss: 0.6898090243339539
+2022-10-13 10:59:36 itr: 635
+training loss: 0.7548825740814209
+2022-10-13 11:03:32 itr: 640
+training loss: 0.6935343742370605
+2022-10-13 11:07:18 itr: 645
+training loss: 0.6811346411705017
+2022-10-13 11:11:03 itr: 650
+training loss: 0.7123901844024658
+2022-10-13 11:14:50 itr: 655
+training loss: 0.7188477516174316
+2022-10-13 11:18:42 itr: 660
+training loss: 0.7027456164360046
+2022-10-13 11:22:36 itr: 665
+training loss: 0.6933090686798096
+2022-10-13 11:26:29 itr: 670
+training loss: 0.6688082218170166
+current best loss: 0.648033
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn1/model.ckpt-best
+2022-10-13 11:30:28 itr: 675
+training loss: 0.6480328440666199
+2022-10-13 11:34:28 itr: 680
+training loss: 0.6730069518089294
+2022-10-13 11:38:28 itr: 685
+training loss: 0.7236217260360718
+2022-10-13 11:42:27 itr: 690
+training loss: 0.6616243124008179
+2022-10-13 11:46:34 itr: 695
+training loss: 0.680044949054718
+2022-10-13 11:50:38 itr: 700
+training loss: 0.7168772220611572
