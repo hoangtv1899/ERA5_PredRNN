@@ -30,7 +30,7 @@ list_upper_gribs = ['upper_2023_1.grib',
                    'upper_2023_9.grib',
                    'upper_2023_10.grib',
                    'upper_2023_11.grib',
-                   'upper_2023_11.grib']
+                   'upper_2023_12.grib']
 
 
 datei = datetime.strptime(date_info,"%Y%m%d")
