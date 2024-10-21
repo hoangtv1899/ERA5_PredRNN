@@ -1,0 +1,25 @@
+2022-10-20 21:54:52.018321: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home1/08589/hvtran/.local/lib/python3.9/site-packages/cv2/../../lib64:/opt/apps/pmix/3.2.3/lib:/opt/apps/intel19/python3/3.9.7/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/libfabric/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib/release:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.1.217/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/tbb/lib/intel64_lin/gcc4.8:/opt/intel/compilers_and_libraries_2020.1.217/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.4.0/lib64:/opt/apps/gcc/9.4.0/lib:/usr/lib64
+2022-10-20 21:54:52.018713: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Setting up [LPIPS] perceptual loss: trunk [alex], v[0.1], spatial [off]
+Loading model from: /home1/08589/hvtran/.local/lib/python3.9/site-packages/lpips/weights/v0.1/alex.pth
+Namespace(is_training=1, device='cuda', dataset_name='mnist', train_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_10012015_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_10012016_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012017_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012018_6_24hr.npz,/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_08162020_6_24hr.npz', valid_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_09012018_6_24hr.npz', save_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn1', gen_frm_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn1', input_length=24, total_length=48, img_width=1440, img_height=720, img_channel=6, concurent_step=1, use_weight=1, layer_weight='10,10,10,10,20,20', model_name='predrnn_v2', pretrained_model='/work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-500', num_hidden='400,400,400,400', filter_size=5, stride=1, patch_size=15, patch_size1=4, layer_norm=1, decouple_beta=0.05, reverse_scheduled_sampling=1, r_sampling_step_1=25000.0, r_sampling_step_2=50000, r_exp_alpha=2500, scheduled_sampling=1, sampling_stop_iter=50000, sampling_start_value=1.0, sampling_changing_rate=2e-05, lr=0.0002, reverse_input=1, batch_size=1, max_iterations=10000, display_interval=50, test_interval=1000000, snapshot_interval=2000, num_save_samples=10, n_gpu=1, visual=0, visual_path='./decoupling_visual', injection_action='concat', conv_on_input=0, res_on_conv=0, num_action_ch=4, is_static=0, is_scale=0, out_scale1='', out_scale2='', in_scale1='', in_scale2='', noise_val=0, out_channel=5, stat_layers=8, stat_layers2=5, out_weights='', curr_best_loss=0.65, isloss=1, is_logscale=0, is_WV=1)
+Initializing models
+load model: /work/08589/hvtran/ls6/ERA5_PredRNN-main/model.ckpt-500
+clips
+(2, 30, 2)
+dims
+(1, 3)
+input_raw_data
+(720, 6, 720, 1440)
+Traceback (most recent call last):
+  File "/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/run1.py", line 251, in <module>
+    train_wrapper(model)
+  File "/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/run1.py", line 197, in train_wrapper
+    train_input_handle, test_input_handle = datasets_factory.data_provider(
+  File "/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/core/data_provider/datasets_factory.py", line 39, in data_provider
+    train_input_handle = datasets_map[dataset_name].InputHandle(train_input_param)
+  File "/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/core/data_provider/mnist.py", line 22, in __init__
+    self.load()
+  File "/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/core/data_provider/mnist.py", line 33, in load
+    input_raw_arr = np.zeros((temp_shape[0]*self.num_paths + 100, self.img_channel, 
+numpy.core._exceptions.MemoryError: Unable to allocate 1.73 TiB for an array with shape (3820, 60, 720, 1440) and data type float64

@@ -18,7 +18,7 @@ class Model(object):
 
         if configs.model_name in networks_map:
             Network = networks_map[configs.model_name]
-            self.network = Network(self.num_layers, self.num_hidden, configs).to(self.configs.device)
+            self.network = Network(self.num_layers, self.num_hidden, configs).to('cuda:1')
         else:
             raise ValueError('Name of network unknown %s' % configs.model_name)
 
@@ -33,7 +33,7 @@ class Model(object):
 
     def load(self, checkpoint_path):
         print('load model:', checkpoint_path)
-        stats = torch.load(checkpoint_path)
+        stats = torch.load(checkpoint_path, map_location=torch.device('cuda:1'))
         self.network.load_state_dict(stats['net_param'])
 
     def train(self, frames, mask, istrain=True):
@@ -43,7 +43,6 @@ class Model(object):
         next_frames, loss = self.network(frames_tensor, mask_tensor,istrain=istrain)
         loss.backward()
         del next_frames
-        torch.cuda.empty_cache()
         self.optimizer.step()
         return loss.detach().cpu().numpy()
 
@@ -52,15 +51,18 @@ class Model(object):
         total_length = self.configs.total_length
         output_length = total_length - input_length
         frames_tensor = torch.FloatTensor(frames).to(self.configs.device)
+        #frames_tensor[:,total_length*2:,:,:,:] = 0
         mask_tensor = torch.FloatTensor(mask).to(self.configs.device)
         final_next_frames = []
         for i in range(self.configs.concurent_step):
-            print(i)
-            next_frames, _ = self.network(frames_tensor[:,input_length*i:input_length*i+total_length,:,:,:], 
+            #print(i)
+            with torch.no_grad():
+                next_frames, _ = self.network(frames_tensor[:,input_length*i:input_length*i+total_length,:,:,:], 
                                           mask_tensor,
                                           istrain=istrain)
-            frames_tensor[:,input_length*i+1:input_length*i+total_length,:,:,:] = next_frames
-            final_next_frames.append(next_frames.detach().cpu().numpy()[:,-output_length:,:,:,:])
+            frames_tensor[:,input_length*i+total_length - output_length:\
+                          input_length*i+total_length,:,:,:] = next_frames[:,-output_length:,:,:,:]
+            final_next_frames.append(next_frames[:,-output_length:,:,:,:].detach().cpu().numpy())
             del next_frames
             torch.cuda.empty_cache()
         return np.hstack(final_next_frames)

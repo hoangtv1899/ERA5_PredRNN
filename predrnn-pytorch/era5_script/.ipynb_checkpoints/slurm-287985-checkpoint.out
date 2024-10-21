@@ -1,0 +1,383 @@
+2022-07-22 20:35:39.832261: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home1/08589/hvtran/.local/lib/python3.9/site-packages/cv2/../../lib64:/opt/apps/pmix/3.2.3/lib:/opt/apps/intel19/python3/3.9.7/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/libfabric/lib:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib/release:/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.1.217/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/tbb/lib/intel64_lin/gcc4.8:/opt/intel/compilers_and_libraries_2020.1.217/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.1.217/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.4.0/lib64:/opt/apps/gcc/9.4.0/lib:/usr/lib64
+2022-07-22 20:35:39.832665: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Setting up [LPIPS] perceptual loss: trunk [alex], v[0.1], spatial [off]
+Loading model from: /home1/08589/hvtran/.local/lib/python3.9/site-packages/lpips/weights/v0.1/alex.pth
+Namespace(is_training=1, device='cuda', dataset_name='mnist', train_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_2015_6_12hr.npz', valid_data_paths='/work/08589/hvtran/ls6/ERA5_PredRNN-main/era5_train_5_12hr.npz', save_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test', gen_frm_dir='/work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test', input_length=12, total_length=24, img_width=1440, img_height=720, img_channel=6, concurent_step=1, use_weight=1, layer_weight='10,10,10,10,20,20', model_name='predrnn_v2', pretrained_model='', num_hidden='512,512,512,512', filter_size=5, stride=1, patch_size=15, patch_size1=4, layer_norm=1, decouple_beta=0.05, reverse_scheduled_sampling=1, r_sampling_step_1=25000.0, r_sampling_step_2=50000, r_exp_alpha=2500, scheduled_sampling=1, sampling_stop_iter=50000, sampling_start_value=1.0, sampling_changing_rate=2e-05, lr=2.5e-05, reverse_input=1, batch_size=1, max_iterations=5000, display_interval=10, test_interval=1000000, snapshot_interval=200, num_save_samples=10, n_gpu=1, visual=0, visual_path='./decoupling_visual', injection_action='concat', conv_on_input=0, res_on_conv=0, num_action_ch=4, is_static=0, is_scale=0, out_scale1='', out_scale2='', in_scale1='', in_scale2='', noise_val=0, out_channel=5, stat_layers=8, stat_layers2=5, out_weights='', curr_best_loss=1000000.0, isloss=1, is_logscale=0, is_WV=1)
+Initializing models
+input_raw_data
+(720, 5, 720, 1440)
+dims
+(1, 3)
+clips
+(2, 60, 2)
+input_raw_data
+(720, 6, 720, 1440)
+dims
+(1, 3)
+clips
+(2, 60, 2)
+2022-07-22 20:43:20 itr: 10
+training loss: 4.925268173217773
+2022-07-22 20:47:21 itr: 20
+training loss: 4.646512508392334
+2022-07-22 20:51:23 itr: 30
+training loss: 4.689879417419434
+2022-07-22 20:55:24 itr: 40
+training loss: 4.881399631500244
+2022-07-22 20:59:25 itr: 50
+training loss: 4.682969093322754
+2022-07-22 21:03:26 itr: 60
+training loss: 4.7349042892456055
+2022-07-22 21:07:26 itr: 70
+training loss: 4.939858436584473
+2022-07-22 21:11:27 itr: 80
+training loss: 5.061885833740234
+2022-07-22 21:15:28 itr: 90
+training loss: 4.8328680992126465
+2022-07-22 21:19:28 itr: 100
+training loss: 4.85134220123291
+2022-07-22 21:23:29 itr: 110
+training loss: 4.933770179748535
+2022-07-22 21:27:29 itr: 120
+training loss: 4.829689979553223
+2022-07-22 21:31:30 itr: 130
+training loss: 4.947493553161621
+2022-07-22 21:35:31 itr: 140
+training loss: 4.985118865966797
+2022-07-22 21:39:31 itr: 150
+training loss: 4.9237060546875
+2022-07-22 21:43:32 itr: 160
+training loss: 4.895090103149414
+2022-07-22 21:47:33 itr: 170
+training loss: 4.986328125
+2022-07-22 21:51:34 itr: 180
+training loss: 4.98746919631958
+2022-07-22 21:55:36 itr: 190
+training loss: 4.9209747314453125
+2022-07-22 21:59:37 itr: 200
+training loss: 5.147647380828857
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test/model.ckpt-200
+2022-07-22 22:03:40 itr: 210
+training loss: 4.842206001281738
+2022-07-22 22:07:39 itr: 220
+training loss: 5.066743850708008
+2022-07-22 22:11:38 itr: 230
+training loss: 4.859832763671875
+2022-07-22 22:15:37 itr: 240
+training loss: 4.9418439865112305
+2022-07-22 22:19:36 itr: 250
+training loss: 5.063292026519775
+2022-07-22 22:23:35 itr: 260
+training loss: 5.047401428222656
+2022-07-22 22:27:33 itr: 270
+training loss: 5.09208869934082
+2022-07-22 22:31:32 itr: 280
+training loss: 5.077741622924805
+2022-07-22 22:35:30 itr: 290
+training loss: 5.084282875061035
+2022-07-22 22:39:29 itr: 300
+training loss: 5.065709114074707
+2022-07-22 22:43:28 itr: 310
+training loss: 5.067151069641113
+2022-07-22 22:47:27 itr: 320
+training loss: 5.056586742401123
+2022-07-22 22:51:27 itr: 330
+training loss: 5.103667259216309
+2022-07-22 22:55:28 itr: 340
+training loss: 5.035123825073242
+2022-07-22 22:59:28 itr: 350
+training loss: 4.998172283172607
+2022-07-22 23:03:29 itr: 360
+training loss: 5.083844184875488
+2022-07-22 23:07:30 itr: 370
+training loss: 5.050121307373047
+2022-07-22 23:11:32 itr: 380
+training loss: 5.141329288482666
+2022-07-22 23:15:34 itr: 390
+training loss: 5.1423163414001465
+2022-07-22 23:19:36 itr: 400
+training loss: 5.101123332977295
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test/model.ckpt-400
+2022-07-22 23:23:42 itr: 410
+training loss: 5.177023410797119
+2022-07-22 23:27:44 itr: 420
+training loss: 5.19858980178833
+2022-07-22 23:31:46 itr: 430
+training loss: 5.218840599060059
+2022-07-22 23:35:48 itr: 440
+training loss: 5.173595905303955
+2022-07-22 23:39:50 itr: 450
+training loss: 5.087432861328125
+2022-07-22 23:43:51 itr: 460
+training loss: 5.279943466186523
+2022-07-22 23:47:53 itr: 470
+training loss: 5.2207183837890625
+2022-07-22 23:51:55 itr: 480
+training loss: 5.22209358215332
+2022-07-22 23:55:57 itr: 490
+training loss: 5.217041969299316
+2022-07-22 23:59:58 itr: 500
+training loss: 5.343928813934326
+2022-07-23 00:04:00 itr: 510
+training loss: 5.291965484619141
+2022-07-23 00:08:02 itr: 520
+training loss: 5.317724227905273
+2022-07-23 00:12:04 itr: 530
+training loss: 5.3389387130737305
+2022-07-23 00:16:06 itr: 540
+training loss: 5.316937446594238
+2022-07-23 00:20:08 itr: 550
+training loss: 5.419201850891113
+2022-07-23 00:24:06 itr: 560
+training loss: 5.297128677368164
+2022-07-23 00:28:05 itr: 570
+training loss: 5.375244140625
+2022-07-23 00:32:03 itr: 580
+training loss: 5.353652000427246
+2022-07-23 00:36:02 itr: 590
+training loss: 5.411986351013184
+2022-07-23 00:40:00 itr: 600
+training loss: 5.347344398498535
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test/model.ckpt-600
+2022-07-23 00:44:03 itr: 610
+training loss: 5.410213470458984
+2022-07-23 00:48:02 itr: 620
+training loss: 5.320641994476318
+2022-07-23 00:52:00 itr: 630
+training loss: 5.39207649230957
+2022-07-23 00:55:59 itr: 640
+training loss: 5.379057884216309
+2022-07-23 00:59:57 itr: 650
+training loss: 5.413557052612305
+2022-07-23 01:03:56 itr: 660
+training loss: 5.427000522613525
+2022-07-23 01:07:55 itr: 670
+training loss: 5.387441158294678
+2022-07-23 01:11:53 itr: 680
+training loss: 5.381092071533203
+2022-07-23 01:15:52 itr: 690
+training loss: 5.420727252960205
+2022-07-23 01:19:50 itr: 700
+training loss: 5.552265644073486
+2022-07-23 01:23:49 itr: 710
+training loss: 5.458010673522949
+2022-07-23 01:27:47 itr: 720
+training loss: 5.217170715332031
+2022-07-23 01:31:46 itr: 730
+training loss: 5.515554904937744
+2022-07-23 01:35:44 itr: 740
+training loss: 5.408524990081787
+2022-07-23 01:39:43 itr: 750
+training loss: 5.461905002593994
+2022-07-23 01:43:41 itr: 760
+training loss: 5.4820661544799805
+2022-07-23 01:47:40 itr: 770
+training loss: 5.449993133544922
+2022-07-23 01:51:38 itr: 780
+training loss: 5.461050987243652
+2022-07-23 01:55:37 itr: 790
+training loss: 5.510575294494629
+2022-07-23 01:59:35 itr: 800
+training loss: 5.45258092880249
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test/model.ckpt-800
+2022-07-23 02:03:38 itr: 810
+training loss: 5.543510913848877
+2022-07-23 02:07:37 itr: 820
+training loss: 5.561251640319824
+2022-07-23 02:11:36 itr: 830
+training loss: 5.504827499389648
+2022-07-23 02:15:34 itr: 840
+training loss: 5.59135627746582
+2022-07-23 02:19:33 itr: 850
+training loss: 5.542849063873291
+2022-07-23 02:23:31 itr: 860
+training loss: 5.585755825042725
+2022-07-23 02:27:30 itr: 870
+training loss: 5.652222633361816
+2022-07-23 02:31:28 itr: 880
+training loss: 5.628716468811035
+2022-07-23 02:35:27 itr: 890
+training loss: 5.633776664733887
+2022-07-23 02:39:25 itr: 900
+training loss: 5.584897041320801
+2022-07-23 02:43:26 itr: 910
+training loss: 5.6505866050720215
+2022-07-23 02:47:27 itr: 920
+training loss: 5.764923572540283
+2022-07-23 02:51:27 itr: 930
+training loss: 5.652543067932129
+2022-07-23 02:55:28 itr: 940
+training loss: 5.640690803527832
+2022-07-23 02:59:28 itr: 950
+training loss: 5.856383323669434
+2022-07-23 03:03:29 itr: 960
+training loss: 5.820979595184326
+2022-07-23 03:07:30 itr: 970
+training loss: 5.905996322631836
+2022-07-23 03:11:32 itr: 980
+training loss: 5.847574234008789
+2022-07-23 03:15:33 itr: 990
+training loss: 5.556140899658203
+2022-07-23 03:19:35 itr: 1000
+training loss: 5.944991111755371
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test/model.ckpt-1000
+2022-07-23 03:23:42 itr: 1010
+training loss: 5.988672256469727
+2022-07-23 03:27:43 itr: 1020
+training loss: 6.0292158126831055
+2022-07-23 03:31:45 itr: 1030
+training loss: 5.970841407775879
+2022-07-23 03:35:47 itr: 1040
+training loss: 6.059238433837891
+2022-07-23 03:39:49 itr: 1050
+training loss: 6.069011688232422
+2022-07-23 03:43:51 itr: 1060
+training loss: 6.108311653137207
+2022-07-23 03:47:53 itr: 1070
+training loss: 6.1766815185546875
+2022-07-23 03:51:54 itr: 1080
+training loss: 6.211242198944092
+2022-07-23 03:55:56 itr: 1090
+training loss: 6.236110687255859
+2022-07-23 03:59:58 itr: 1100
+training loss: 5.8070526123046875
+2022-07-23 04:04:00 itr: 1110
+training loss: 6.300064563751221
+2022-07-23 04:08:01 itr: 1120
+training loss: 6.436362266540527
+2022-07-23 04:12:03 itr: 1130
+training loss: 6.503349304199219
+2022-07-23 04:16:03 itr: 1140
+training loss: 6.593319416046143
+2022-07-23 04:20:03 itr: 1150
+training loss: 6.657840728759766
+2022-07-23 04:24:03 itr: 1160
+training loss: 6.745197772979736
+2022-07-23 04:28:03 itr: 1170
+training loss: 6.7402801513671875
+2022-07-23 04:32:03 itr: 1180
+training loss: 6.777926445007324
+2022-07-23 04:36:04 itr: 1190
+training loss: 6.976446628570557
+2022-07-23 04:40:04 itr: 1200
+training loss: 6.973576545715332
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test/model.ckpt-1200
+2022-07-23 04:44:08 itr: 1210
+training loss: 7.187111854553223
+2022-07-23 04:48:08 itr: 1220
+training loss: 7.360184192657471
+2022-07-23 04:52:06 itr: 1230
+training loss: 7.323580741882324
+2022-07-23 04:56:05 itr: 1240
+training loss: 7.42013692855835
+2022-07-23 05:00:04 itr: 1250
+training loss: 7.5698370933532715
+2022-07-23 05:04:05 itr: 1260
+training loss: 7.6319732666015625
+2022-07-23 05:08:05 itr: 1270
+training loss: 7.853209972381592
+2022-07-23 05:12:06 itr: 1280
+training loss: 7.922684192657471
+2022-07-23 05:16:06 itr: 1290
+training loss: 8.087223052978516
+2022-07-23 05:20:07 itr: 1300
+training loss: 8.131219863891602
+2022-07-23 05:24:07 itr: 1310
+training loss: 8.18387508392334
+2022-07-23 05:28:08 itr: 1320
+training loss: 8.173754692077637
+2022-07-23 05:32:07 itr: 1330
+training loss: 8.390363693237305
+2022-07-23 05:36:08 itr: 1340
+training loss: 8.504951477050781
+2022-07-23 05:40:10 itr: 1350
+training loss: 8.544586181640625
+2022-07-23 05:44:09 itr: 1360
+training loss: 8.74046802520752
+2022-07-23 05:48:09 itr: 1370
+training loss: 8.859892845153809
+2022-07-23 05:52:09 itr: 1380
+training loss: 8.714805603027344
+2022-07-23 05:56:09 itr: 1390
+training loss: 8.942832946777344
+2022-07-23 06:00:09 itr: 1400
+training loss: 9.107023239135742
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test/model.ckpt-1400
+2022-07-23 06:04:13 itr: 1410
+training loss: 9.192689895629883
+2022-07-23 06:08:13 itr: 1420
+training loss: 9.096461296081543
+2022-07-23 06:12:14 itr: 1430
+training loss: 9.157423973083496
+2022-07-23 06:16:14 itr: 1440
+training loss: 9.17379379272461
+2022-07-23 06:20:15 itr: 1450
+training loss: 9.387777328491211
+2022-07-23 06:24:14 itr: 1460
+training loss: 9.432182312011719
+2022-07-23 06:28:15 itr: 1470
+training loss: 9.445810317993164
+2022-07-23 06:32:15 itr: 1480
+training loss: 9.601059913635254
+2022-07-23 06:36:16 itr: 1490
+training loss: 9.661297798156738
+2022-07-23 06:40:16 itr: 1500
+training loss: 9.775320053100586
+2022-07-23 06:44:16 itr: 1510
+training loss: 9.814216613769531
+2022-07-23 06:48:17 itr: 1520
+training loss: 9.756144523620605
+2022-07-23 06:52:17 itr: 1530
+training loss: 9.970705032348633
+2022-07-23 06:56:18 itr: 1540
+training loss: 9.754352569580078
+2022-07-23 07:00:18 itr: 1550
+training loss: 9.81361198425293
+2022-07-23 07:04:18 itr: 1560
+training loss: 10.02360725402832
+2022-07-23 07:08:19 itr: 1570
+training loss: 10.003280639648438
+2022-07-23 07:12:19 itr: 1580
+training loss: 10.16970443725586
+2022-07-23 07:16:20 itr: 1590
+training loss: 10.338194847106934
+2022-07-23 07:20:20 itr: 1600
+training loss: 10.435346603393555
+save model to /work/08589/hvtran/ls6/ERA5_PredRNN-main/predrnn-pytorch/checkpoints/era5_predrnn_test/model.ckpt-1600
+2022-07-23 07:24:25 itr: 1610
+training loss: 10.561405181884766
+2022-07-23 07:28:26 itr: 1620
+training loss: 10.444314956665039
+2022-07-23 07:32:24 itr: 1630
+training loss: 10.409188270568848
+2022-07-23 07:36:23 itr: 1640
+training loss: 10.584659576416016
+2022-07-23 07:40:22 itr: 1650
+training loss: 10.784198760986328
+2022-07-23 07:44:20 itr: 1660
+training loss: 10.721267700195312
+2022-07-23 07:48:19 itr: 1670
+training loss: 10.755823135375977
+2022-07-23 07:52:17 itr: 1680
+training loss: 10.917641639709473
+2022-07-23 07:56:15 itr: 1690
+training loss: 11.058944702148438
+2022-07-23 08:00:14 itr: 1700
+training loss: 11.047258377075195
+2022-07-23 08:04:12 itr: 1710
+training loss: 10.850869178771973
+2022-07-23 08:08:11 itr: 1720
+training loss: 11.223608016967773
+2022-07-23 08:12:10 itr: 1730
+training loss: 11.225231170654297
+2022-07-23 08:16:08 itr: 1740
+training loss: 11.30744743347168
+2022-07-23 08:20:07 itr: 1750
+training loss: 11.421430587768555
+2022-07-23 08:24:06 itr: 1760
+training loss: 10.109173774719238
+2022-07-23 08:28:04 itr: 1770
+training loss: 11.506108283996582
+2022-07-23 08:32:03 itr: 1780
+training loss: 11.470285415649414
+slurmstepd: error: *** JOB 287985 ON c308-001 CANCELLED AT 2022-07-23T08:35:51 DUE TO TIME LIMIT ***
