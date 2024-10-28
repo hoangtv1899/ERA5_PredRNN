@@ -3,7 +3,7 @@ __author__ = 'jianjin'
 import numpy as np
 import os
 from PIL import Image
-import tensorflow as tf
+#import tensorflow as tf
 import logging
 import random
 

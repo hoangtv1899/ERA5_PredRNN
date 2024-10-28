@@ -1,15 +1,18 @@
-__author__ = 'yunbo'
-
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 class SpatioTemporalLSTMCell(nn.Module):
     def __init__(self, in_channel, num_hidden, height, width, filter_size, stride, layer_norm):
         super(SpatioTemporalLSTMCell, self).__init__()
 
         self.num_hidden = num_hidden
-        self.padding = filter_size // 2
+        # self.padding = filter_size // 2
+        self.padding = 0
+        self.padding_lat = (0, 0, filter_size // 2, filter_size // 2)
+        self.padding_long = (filter_size // 2, filter_size // 2, 0, 0)
         self._forget_bias = 1.0
+        
         if layer_norm:
             self.conv_x = nn.Sequential(
                 nn.Conv2d(in_channel, num_hidden * 7, kernel_size=filter_size, stride=stride, padding=self.padding, bias=False),
@@ -43,10 +46,18 @@ class SpatioTemporalLSTMCell(nn.Module):
         self.conv_last = nn.Conv2d(num_hidden * 2, num_hidden, kernel_size=1, stride=1, padding=0, bias=False)
 
 
+    def get_padding(self, x):
+        x = F.pad(x, self.padding_long, "circular")
+        # print(f"After padding longitude, x shape: {x.shape}")
+        x = F.pad(x, self.padding_lat, "replicate")
+        # print(f"After padding latitude, x shape: {x.shape}")
+        return x
+
     def forward(self, x_t, h_t, c_t, m_t):
-        x_concat = self.conv_x(x_t)
-        h_concat = self.conv_h(h_t)
-        m_concat = self.conv_m(m_t)
+        x_concat = self.conv_x(self.get_padding(x_t))
+        h_concat = self.conv_h(self.get_padding(h_t))
+        m_concat = self.conv_m(self.get_padding(m_t))
+
         i_x, f_x, g_x, i_x_prime, f_x_prime, g_x_prime, o_x = torch.split(x_concat, self.num_hidden, dim=1)
         i_h, f_h, g_h, o_h = torch.split(h_concat, self.num_hidden, dim=1)
         i_m, f_m, g_m = torch.split(m_concat, self.num_hidden, dim=1)
@@ -66,9 +77,9 @@ class SpatioTemporalLSTMCell(nn.Module):
         m_new = f_t_prime * m_t + delta_m
 
         mem = torch.cat((c_new, m_new), 1)
-        o_t = torch.sigmoid(o_x + o_h + self.conv_o(mem))
+        o_t = torch.sigmoid(o_x + o_h + self.conv_o(self.get_padding(mem)))
         h_new = o_t * torch.tanh(self.conv_last(mem))
-
+        # print(f"h_new shape: {h_new.shape}")
         return h_new, c_new, m_new, delta_c, delta_m
 
 
